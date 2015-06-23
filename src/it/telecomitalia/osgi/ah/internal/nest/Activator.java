@@ -3,14 +3,28 @@ package it.telecomitalia.osgi.ah.internal.nest;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
+
 public class Activator implements BundleActivator {
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
+	/**
+	 * Estabilish a SSL protected connection with NEST servers by send the user credential
 	 */
 	public void start(BundleContext context) throws Exception {
-		System.out.println("Hello World!!");
+		System.out.println("Trying to interact with NEST Cloud!!");
+		JNest jn=new JNest();
+		Credentials cred=new Credentials("tonicmimosa@gmail.com","mimos@123");
+		jn.setCredentials(cred);
+		jn.login();
+		jn.getStatus();
+		System.out.println(jn.getStatusResponse().getMetaData().getDeviceIds()[0]);
+		jn.getStatusResponse().getDevices();
+		
+		jn.setTemperature(18.0);
+		
+		Device device=jn.getStatusResponse().getDevices();
+		System.out.println(device);
+		
+		Track track = jn.getStatusResponse().getTracks();
 	}
 	
 	/*
@@ -18,7 +32,8 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
-		System.out.println("Goodbye World!!");
+		System.out.println("Stopping bundle");
+		//Implement logout
 	}
 
 }
