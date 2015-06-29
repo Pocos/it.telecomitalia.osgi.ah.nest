@@ -17,7 +17,7 @@ public class JNest {
 	private String userAgent = "";
 	private String uri = "https://home.nest.com/user/login";
 	private LoginResponse loginResponse;
-	private StatusResponse statusResponse;
+	private StatusResponse statusResponse=null;
 	public boolean isLoggedIn = false;
 	public static Gson gson;
 	
@@ -31,6 +31,9 @@ public class JNest {
 		gson = gsonb.create();
 	}
 	
+	/**
+	 * Try to contact NEST cloud through SSL connections
+	 */
 	public void login() {
 		
 		URL url;
@@ -71,6 +74,10 @@ public class JNest {
 		
 	}
 	
+	/**
+	 * If the login was successful this method obtains the status of all the devices registered on the NEST cloud as a JSON.
+	 *  Then it populates the StatusResponse variable parsing this JSON. Call <b>getStatusResponse()</b> to obtain the related Object
+	 */
 	public void getStatus () {
 		
 		if (!isLoggedIn)
@@ -293,6 +300,11 @@ public class JNest {
 		}
 	}
 
+	/**
+	 * This method return the object variable associated to the JSON obtained by a previous call of <b>getStatus()</b> method. 
+	 * Call getStatusResponse() before getStatus() will produce a null return value 
+	 * @return The Object obtained by the parsing operation
+	 */
 	public StatusResponse getStatusResponse() {
 		return statusResponse;
 	}
@@ -301,6 +313,10 @@ public class JNest {
 		return credentials;
 	}
 
+	/**
+	 * Set the credentials of the main JNest Object
+	 * @param credentials
+	 */
 	public void setCredentials(Credentials credentials) {
 		this.credentials = credentials;
 	}

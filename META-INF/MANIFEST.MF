@@ -4,7 +4,7 @@ Bundle-Name: Nest
 Bundle-SymbolicName: it.telecomitalia.osgi.ah.nest
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: it.telecomitalia.osgi.ah.internal.nest.Activator
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: org.osgi.framework;version="1.3.0"
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,lib/gson-2.3.1.jar

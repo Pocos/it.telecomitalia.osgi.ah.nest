@@ -7,6 +7,11 @@ public class Credentials {
 	private String userName;
 	private String password;
 	
+	/**
+	 * Create an object that contains user credentials of the NEST account
+	 * @param userName
+	 * @param password
+	 */
 	public Credentials (String userName, String password) {
 		this.userName = userName;
 		this.password = password;
