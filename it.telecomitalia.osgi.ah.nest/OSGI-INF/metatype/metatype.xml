@@ -1,0 +1,17 @@
+<metatype:MetaData xmlns:metatype="http://www.osgi.org/xmlns/metatype/v1.0.0">
+  
+  	<OCD description="Nest Account Configuration" 
+       	name="Nest Base Driver Configuration"
+       	id="it.telecomitalia.osgi.ah.nest">
+    	<AD name="Nest Account Username"  id="it.telecomitalia.osgi.ah.nest.username" required="true" type="String" default="username@domain.com"/>
+    	<AD name="Nest Account Password"  id="it.telecomitalia.osgi.ah.nest.password" required="true" type="String" default="admin"/>
+	</OCD>
+  
+   	<Designate pid="it.telecomitalia.osgi.ah.nest">
+        <Object ocdref="it.telecomitalia.osgi.ah.nest">
+      		<Attribute adref="it.telecomitalia.osgi.ah.nest.username" content="username@domain.com"/>
+      		<Attribute adref="it.telecomitalia.osgi.ah.nest.password" content="admin"/>
+    	</Object>
+  	</Designate>
+  
+</metatype:MetaData>

@@ -27,7 +27,7 @@ public class Activator implements BundleActivator {
 	public void start(BundleContext context) throws Exception {
 		System.out.println("Trying to interact with NEST Cloud!!");
 		this.context=context;
-		nestServiceReg = context.registerService(NewDeviceService.class.getName(), this, null);
+//		nestServiceReg = context.registerService(NewDeviceService.class.getName(), this, null);
 		}
 	
 	/*
@@ -36,7 +36,7 @@ public class Activator implements BundleActivator {
 	 */
 	public void stop(BundleContext context) throws Exception {
 		System.out.println("Stopping bundle");
-		nestServiceReg.unregister();
+//		nestServiceReg.unregister();
 		//Implement logout
 
 	}
