@@ -2,6 +2,7 @@ package it.telecomitalia.osgi.ah.internal.nest;
 
 import it.telecomitalia.osgi.ah.internal.nest.lib.Credentials;
 import it.telecomitalia.osgi.ah.internal.nest.lib.Device;
+import it.telecomitalia.osgi.ah.internal.nest.lib.DeviceData;
 import it.telecomitalia.osgi.ah.internal.nest.lib.JNest;
 import it.telecomitalia.osgi.ah.internal.nest.lib.Track;
 
@@ -19,18 +20,31 @@ public class NestBaseDriver {
 		JNest jn=new JNest();
 		Credentials cred=new Credentials(props.get("it.telecomitalia.osgi.ah.nest.username"),props.get("it.telecomitalia.osgi.ah.nest.password"));
 		jn.setCredentials(cred);
-
+		jn.login();
 		jn.getStatus();
-		System.out.println(jn.getStatusResponse().getMetaData().getDeviceIds()[0]);
-		jn.getStatusResponse().getDevices();
+		Device device_list=jn.getStatusResponse().getDevices();
+		for (String id : device_list.getDeviceIds()){
+			//create a service for each device
+			createDevice(id,device_list.getDevice(id));
+		}
 		
-		jn.setTemperature(19.0);
+		System.out.println(jn.getStatusResponse().getMetaData().getDeviceIds()[0]);
+		
+		
+		
+		
+		jn.setTemperature(22.0);
 		
 		Device device=jn.getStatusResponse().getDevices();
 		System.out.println("PIPPO"+device);
 		
 		Track track = jn.getStatusResponse().getTracks();
 		track.getDevice(jn.getStatusResponse().getMetaData().getDeviceIds()[0]);
+	}
+
+	private void createDevice(String id, DeviceData device_properties) {
+		
+		
 	}
 
 	protected void deactivate(ComponentContext ctxt) {

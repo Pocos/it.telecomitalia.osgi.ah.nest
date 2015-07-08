@@ -28,6 +28,7 @@ public class JNest {
 		gsonb.registerTypeAdapter(MetaData.class, new MetaDataDeserializer());
 		gsonb.registerTypeAdapter(Structure.class, new StructureDeserializer());
 		gsonb.registerTypeAdapter(Track.class, new TrackDeserializer());
+		gsonb.registerTypeAdapter(Shared.class, new SharedDeserializer());
 		gson = gsonb.create();
 	}
 	

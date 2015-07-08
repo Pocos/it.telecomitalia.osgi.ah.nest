@@ -5,6 +5,7 @@ public class StatusResponse {
 	public MetaData metadata;
 	public Structure structure;
 	public Track track;
+	public Shared shared;
 	public StatusResponse () {}
 	
 	/*
