@@ -5,6 +5,10 @@ import java.util.HashMap;
 public class Device {
 	
 	public HashMap<String, DeviceData> devices = new HashMap<String, DeviceData>();
+	/**
+	 * This class collects almost all the info on the Nest Thermostats registered to the cloud and it is indexed by their unique serial id.
+	 * Field of the Nest Thermostat only.
+	 */
 	public Device () {}
 	
 	public DeviceData getDevice(String deviceId) {
@@ -17,6 +21,10 @@ public class Device {
 		return device;
 	}
 	
+	/**
+	 * Retrieve all the id of the registered thermostats
+	 * @return An array of the Nest Thermostat serial ids
+	 */
 	public String[] getDeviceIds () {
 		String[] a = new String[]{};
 		return devices.keySet().toArray(a);

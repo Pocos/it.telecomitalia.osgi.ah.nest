@@ -5,23 +5,27 @@ import java.util.HashMap;
 public class Track {
 	
 	public HashMap<String, TrackData> devices = new HashMap<String, TrackData>();
+	/**
+	 *  This class show the online flag of all the Nest Thermostats registered to the cloud and it is indexed by their unique serial id.
+	 *  Field of the Nest Thermostat only.
+	 */
 	public Track () {}
 	
-	public TrackData getDevice(String deviceId) {
+	public TrackData getTrack(String deviceId) {
 		return devices.get(deviceId);
 	}
 
-	public TrackData createDevice(String key) {
+	public TrackData createTrack(String key) {
 		TrackData device = new TrackData();
-		setDevice(key, device);
+		setTrack(key, device);
 		return device;
 	}
 	
-	public void setDevice(String key,TrackData device) {
+	public void setTrack(String key,TrackData device) {
 		devices.put(key, device);
 	}
 	
-	public String[] getDeviceIds () {
+	public String[] getTrackIds () {
 		String[] a = new String[]{};
 		return devices.keySet().toArray(a);
 	}

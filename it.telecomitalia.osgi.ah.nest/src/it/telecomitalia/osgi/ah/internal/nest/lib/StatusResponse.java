@@ -6,6 +6,8 @@ public class StatusResponse {
 	public Structure structure;
 	public Track track;
 	public Shared shared;
+	public Topaz topaz;
+	public Widget_track widget_track;
 	public StatusResponse () {}
 	
 	/*
@@ -25,6 +27,18 @@ public class StatusResponse {
 	
 	public Track getTracks(){
 		return track;
+	}
+	
+	public Shared getShareds(){
+		return shared;
+	}
+	
+	public Topaz getTopazs(){
+		return topaz;
+	}
+	
+	public Widget_track getWidget_track(){
+		return widget_track;
 	}
 }
 

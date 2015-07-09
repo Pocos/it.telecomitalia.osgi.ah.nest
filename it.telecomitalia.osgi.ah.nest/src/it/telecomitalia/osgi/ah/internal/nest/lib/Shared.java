@@ -10,18 +10,18 @@ public class Shared {
 		return shareds.get(deviceId);
 	}
 
-	public SharedData createDevice(String key) {
+	public SharedData createShared(String key) {
 		SharedData device = new SharedData();
-		setDevice(key, device);
+		setShared(key, device);
 		return device;
 	}
 	
-	public String[] getDeviceIds () {
+	public String[] getSharedIds () {
 		String[] a = new String[]{};
 		return shareds.keySet().toArray(a);
 	}
 
-	public void setDevice(String key, SharedData device) {
+	public void setShared(String key, SharedData device) {
 		shareds.put(key, device);
 	}
 }

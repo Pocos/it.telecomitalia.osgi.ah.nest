@@ -10,11 +10,11 @@ import com.google.gson.JsonElement;
 public class SharedDeserializer implements JsonDeserializer<Shared>{
 	
 	public Shared deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) {
-		Shared shared = new Shared();
+		Shared shareds = new Shared();
     	for( Map.Entry<String, JsonElement> entry : json.getAsJsonObject().entrySet() ) {
-    		SharedData device = JNest.gson.fromJson(entry.getValue(), SharedData.class);
-    		shared.setDevice(entry.getKey(), device);
+    		SharedData shared = JNest.gson.fromJson(entry.getValue(), SharedData.class);
+    		shareds.setShared(entry.getKey(), shared);
 		}
-    	return shared;
+    	return shareds;
     }
 }
