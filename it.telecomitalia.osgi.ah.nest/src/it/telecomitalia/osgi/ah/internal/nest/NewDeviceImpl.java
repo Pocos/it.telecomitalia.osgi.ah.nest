@@ -23,7 +23,7 @@ public class NewDeviceImpl implements NewDeviceService {
 		System.out.println("PIPPO"+device);
 		
 		Track track = jn.getStatusResponse().getTracks();
-		track.getDevice(jn.getStatusResponse().getMetaData().getDeviceIds()[0]);
+//		track.getDevice(jn.getStatusResponse().getMetaData().getDeviceIds()[0]);
 		
 	}
 
