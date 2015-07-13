@@ -14,23 +14,14 @@ public class Activator implements BundleActivator {
 	}
 
 	
-	/**
-	 * Establish a SSL protected connection with NEST servers by send the user credential
-	 */
 	public void start(BundleContext context) throws Exception {
 		System.out.println("Trying to interact with NEST Cloud!!");
-//		nestServiceReg = context.registerService(NewDeviceService.class.getName(), this, null);
+		Activator.context=context;
 		}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
-	 */
 	public void stop(BundleContext context) throws Exception {
 		System.out.println("Stopping bundle");
-//		nestServiceReg.unregister();
-		//Implement logout
-
+		Activator.context=null;
 	}
 
 }
