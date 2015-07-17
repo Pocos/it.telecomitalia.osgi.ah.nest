@@ -1,10 +1,15 @@
 package it.telecomitalia.osgi.ah.internal.nest.lib;
 
+import it.telecomitalia.osgi.ah.internal.nest.DiscoveryThread;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -20,6 +25,7 @@ public class JNest {
 	private StatusResponse statusResponse=null;
 	public boolean isLoggedIn = false;
 	public static Gson gson;
+	private static Logger LOG = LoggerFactory.getLogger(DiscoveryThread.class);
 	
 	public JNest () {
 		GsonBuilder gsonb = new GsonBuilder();
@@ -286,11 +292,12 @@ public class JNest {
 	}
 	
 	private int handleLoginFailure (HttpsURLConnection urlc) throws IOException {
+		LOG.debug("LOGIN FAILURE:"+urlc.getResponseCode());
 		return urlc.getResponseCode();
 	}
 	
 	private void handleStatusFailure (HttpsURLConnection urlc) throws IOException {
-		urlc.getResponseMessage();
+		LOG.debug(urlc.getResponseMessage());
 	}
 	
 	private void handleSuccess (HttpsURLConnection urlc) {

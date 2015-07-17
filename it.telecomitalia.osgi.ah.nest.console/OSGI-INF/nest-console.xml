@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" immediate="true" name="it.telecomitalia.osgi.ah.nest.console">
+   <implementation class="it.telecomitalia.osgi.ah.nest.console.NestConsole"/>
+   <reference bind="addNestDevice" cardinality="0..n" interface="it.telecomitalia.ah.nest.NestDevice" name="NestDevice" policy="dynamic" unbind="removeNestDevice"/>
+   <service>
+      <provide interface="org.eclipse.osgi.framework.console.CommandProvider"/>
+   </service>
+   <property name="osgi.command.scope" type="String" value="Nest"/>"/>
+</scr:component>

@@ -12,55 +12,50 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import org.osgi.service.component.ComponentContext;
+import org.osgi.service.log.LogService;
 
 public class NestBaseDriver {
 
-	public DiscoveryThread discovery=null;
+	public DiscoveryThread discovery = null;
+	private Thread t;
+
 	protected void activate(Map<String, String> props) {
-		
+
 		JNest jn = new JNest();
 		Credentials cred = new Credentials(props.get("it.telecomitalia.osgi.ah.nest.username"),
 				props.get("it.telecomitalia.osgi.ah.nest.password"));
 		jn.setCredentials(cred);
 		jn.login();
-		
-		discovery= new DiscoveryThread(jn);
-		
-		discovery.run();
-		
-		/*
-		System.out.println(jn.getStatusResponse().getMetaData().getDeviceIds()[0]);
 
-		jn.setTemperature(22.0);
-
-		Device device = jn.getStatusResponse().getDevices();
-		System.out.println("PIPPO" + device);
-
-		Track track = jn.getStatusResponse().getTracks();
-		track.getTrack(jn.getStatusResponse().getMetaData().getDeviceIds()[0]);
-		*/
+		discovery = new DiscoveryThread(jn);
+		t = new Thread(discovery);
+		t.start();
 	}
 
-	/*
-	private void createDevice(String id, DeviceData device_properties) {
-
-	}
-*/
-	protected void deactivate(ComponentContext ctxt) {
-		discovery.setTermination(true);
-		discovery=null;
+	protected void deactivate(ComponentContext ctxt) throws InterruptedException {
+		t.interrupt();
+		t.join();
 	}
 
-	protected void modified(Map<String, String> props) {
-		discovery.setTermination(true);
+	protected void bindLogService(LogService log) {
+
+	}
+
+	protected void unbindLogService(LogService log) {
+
+	}
+
+	protected void modified(Map<String, String> props) throws InterruptedException{
+		t.interrupt();
+		t.join();
 		JNest jn = new JNest();
 		Credentials cred = new Credentials(props.get("it.telecomitalia.osgi.ah.nest.username"),
 				props.get("it.telecomitalia.osgi.ah.nest.password"));
 		jn.setCredentials(cred);
 		jn.login();
-		
-		discovery= new DiscoveryThread(jn);
-		
-		discovery.run();
+
+		discovery = new DiscoveryThread(jn);
+		t = new Thread(discovery);
+		t.start();
 	}
 }

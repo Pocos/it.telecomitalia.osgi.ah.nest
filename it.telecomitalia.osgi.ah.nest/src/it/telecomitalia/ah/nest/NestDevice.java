@@ -1,4 +1,4 @@
-package it.telecomitalia.osgi.ah.internal.nest;
+package it.telecomitalia.ah.nest;
 
 public interface NestDevice {
 	public void set(String name, String value);
