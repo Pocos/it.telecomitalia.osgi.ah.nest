@@ -26,14 +26,12 @@ public class DiscoveryThread implements Runnable, NestDevice {
 
 	private static Logger LOG = LoggerFactory.getLogger(DiscoveryThread.class);
 	private JNest jn;
-	private boolean termination;
 	private final double TIMEOUT = 5000;
 	private Map<String, NestDevice> list_devices = new HashMap<String, NestDevice>();
 	private Map<String, ServiceRegistration<?>> list_services = new HashMap<String, ServiceRegistration<?>>();
 
 	public DiscoveryThread(JNest jn) {
 		this.jn = jn;
-		this.termination = false;
 
 	}
 
@@ -44,7 +42,7 @@ public class DiscoveryThread implements Runnable, NestDevice {
 			try {
 
 				jn.getStatus();
-				if(jn.getStatusResponse()==null)
+				if (jn.getStatusResponse() == null)
 					continue;
 				/*
 				 * While the thermostats are indexed by the Device class, the
@@ -69,15 +67,18 @@ public class DiscoveryThread implements Runnable, NestDevice {
 						 * System.out.println("State: ONLINE");
 						 */
 
-						// if the device_list not already contains the id, add it
+						// if the device_list not already contains the id, add
+						// it
 						if (list_devices.containsKey(id))
 							continue;
-						list_devices.put(id, new NestDeviceImpl(this, id));
+						NestDeviceImpl dev=new NestDeviceImpl();
+						ServiceRegistration<?> reg=dev.activate(this,id);
+						list_devices.put(id,dev);
 
 						// create a service for each device, and set the
 						// properties
 						// for the service
-						list_services.put(id,createService(NestDeviceEnum.Type.THERMOSTAT,id));
+						list_services.put(id,reg);
 					}
 				}
 				if (protects_list != null) {
@@ -86,9 +87,11 @@ public class DiscoveryThread implements Runnable, NestDevice {
 
 						if (list_devices.containsKey(id))
 							continue;
-						list_devices.put(id, new NestDeviceImpl(this, id));
+						NestDeviceImpl dev=new NestDeviceImpl();
+						ServiceRegistration<?> reg=dev.activate(this,id);
+						list_devices.put(id, dev);
 						
-						list_services.put(id, createService(NestDeviceEnum.Type.PROTECT,id));
+						list_services.put(id, reg);
 					}
 
 				}
@@ -99,42 +102,37 @@ public class DiscoveryThread implements Runnable, NestDevice {
 				// new_th_list.getDeviceIds();
 
 				Set<String> removed_devices = new HashSet<String>(list_devices.keySet());
-				Set<String>th_set=new HashSet<>();
-				Set<String>pr_set=new HashSet<>();
-				if(thermostats_list !=null){
-					th_set=new HashSet<String>(Arrays.asList(thermostats_list.getDeviceIds()));
+				Set<String> th_set = new HashSet<>();
+				Set<String> pr_set = new HashSet<>();
+				if (thermostats_list != null) {
+					th_set = new HashSet<String>(Arrays.asList(thermostats_list.getDeviceIds()));
 				}
-				if(protects_list!=null){
-					pr_set=new HashSet<String>(Arrays.asList(protects_list.getTopazIds()));
+				if (protects_list != null) {
+					pr_set = new HashSet<String>(Arrays.asList(protects_list.getTopazIds()));
 				}
 				th_set.addAll(pr_set);
 				removed_devices.removeAll(th_set);
-				
-				for(String remId:removed_devices){
+
+				for (String remId : removed_devices) {
 					list_devices.remove(remId);
 					list_services.get(remId).unregister();
 					list_services.remove(remId);
 				}
-				
-				/*for (String devId : list_devices.keySet()) {
-					int found_id = 0;
-					
-					for (String real_id : thermostats_list.getDeviceIds()) {
-						if (real_id.equals(devId)) {
-							found_id = 1;
-							break;
-						}
-					}
-					if (found_id != 1) {
-						list_devices.remove(devId);
-						list_services.get(devId).unregister();
-						list_services.remove(devId);
-					}
-				}*/
+
+				/*
+				 * for (String devId : list_devices.keySet()) { int found_id =
+				 * 0;
+				 * 
+				 * for (String real_id : thermostats_list.getDeviceIds()) { if
+				 * (real_id.equals(devId)) { found_id = 1; break; } } if
+				 * (found_id != 1) { list_devices.remove(devId);
+				 * list_services.get(devId).unregister();
+				 * list_services.remove(devId); } }
+				 */
 
 				Thread.sleep(5000);
 			} catch (InterruptedException e) {
-//				e.printStackTrace();
+				// e.printStackTrace();
 				LOG.debug("Terminating DiscoveryThread");
 				// Thread Stopped, unregister all the services
 				for (String devId : list_services.keySet()) {
@@ -142,33 +140,13 @@ public class DiscoveryThread implements Runnable, NestDevice {
 				}
 				return;
 			}
-		} //end while
+		} // end while
 
 		LOG.debug("Terminazione Thread");
 		// Thread Stopped, unregister all the services
 		for (String devId : list_services.keySet()) {
 			list_services.get(devId).unregister();
 		}
-	}
-
-	private ServiceRegistration<?> createService(Type type, String id) {
-		Dictionary<String, Object> props = new Hashtable<String, Object>();
-		props.put("service.pid", id);
-		props.put(Constants.DEVICE_CATEGORY, "Nest");
-		props.put("type", type.toString());
-		props.put(Constants.DEVICE_SERIAL, id);
-		ServiceRegistration<?> sReg = Activator.getContext().registerService(NestDevice.class.getName(), this,
-				props);
-		return sReg;
-		
-	}
-
-	private synchronized boolean getTermination() {
-		return termination;
-	}
-
-	public synchronized void setTermination(boolean new_value) {
-		termination = new_value;
 	}
 
 	public String get(String id, String name) {

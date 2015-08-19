@@ -7,3 +7,4 @@ public interface NestDevice {
 
 	public String getId();
 }
+

@@ -30,6 +30,6 @@ public class NestThermostatApplianceFactory extends DriverApplianceFactory imple
 
 	
 	public String deviceMatchFilterString() {
-		return "(&(DEVICE_CATEGORY=Nest)(org.nest.device.type=Thermostat))";
+		return "(&(DEVICE_CATEGORY=Nest)(org.nest.device.type=THERMOSTAT))";
 	}
 }
