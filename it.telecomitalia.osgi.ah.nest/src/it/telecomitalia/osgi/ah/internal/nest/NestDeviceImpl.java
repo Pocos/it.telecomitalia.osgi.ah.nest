@@ -7,9 +7,10 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.device.Constants;
 
 import it.telecomitalia.ah.nest.NestDevice;
+import it.telecomitalia.ah.nest.NestHacDevice;
 import it.telecomitalia.osgi.ah.internal.nest.NestDeviceEnum.Type;
 
-public class NestDeviceImpl implements NestDevice {
+public class NestDeviceImpl implements NestDevice, NestHacDevice {
 
 	private DiscoveryThread discovery;
 	private String id;
@@ -51,6 +52,25 @@ public class NestDeviceImpl implements NestDevice {
 		ServiceRegistration<?> sReg = Activator.getContext().registerService(NestDevice.class.getName(), this, props);
 		return sReg;
 
+	}
+
+	
+	@Override
+	public String getPid() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void remove() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void noDriverFound() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

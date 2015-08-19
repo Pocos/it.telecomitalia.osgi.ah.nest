@@ -26,7 +26,7 @@ public class DiscoveryThread implements Runnable, NestDevice {
 
 	private static Logger LOG = LoggerFactory.getLogger(DiscoveryThread.class);
 	private JNest jn;
-	private final double TIMEOUT = 5000;
+	private final double TIMEOUT = 50000;
 	private Map<String, NestDevice> list_devices = new HashMap<String, NestDevice>();
 	private Map<String, ServiceRegistration<?>> list_services = new HashMap<String, ServiceRegistration<?>>();
 
@@ -57,7 +57,7 @@ public class DiscoveryThread implements Runnable, NestDevice {
 				// for the Nest Protect
 				if (thermostats_list != null) {
 					for (String id : thermostats_list.getDeviceIds()) {
-						LOG.debug("Found Thermostat: {}", id);
+//						LOG.debug("Found Thermostat: {}", id);
 
 						/*
 						 * if (System.currentTimeMillis() >
@@ -83,7 +83,7 @@ public class DiscoveryThread implements Runnable, NestDevice {
 				}
 				if (protects_list != null) {
 					for (String id : protects_list.getTopazIds()) {
-						LOG.debug("Found Protect: {}", id);
+//						LOG.debug("Found Protect: {}", id);
 
 						if (list_devices.containsKey(id))
 							continue;
