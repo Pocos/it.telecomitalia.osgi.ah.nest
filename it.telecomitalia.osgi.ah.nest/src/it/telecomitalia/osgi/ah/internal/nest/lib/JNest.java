@@ -292,7 +292,7 @@ public class JNest {
 	}
 	
 	private int handleLoginFailure (HttpsURLConnection urlc) throws IOException {
-		LOG.debug("LOGIN FAILURE:"+urlc.getResponseCode());
+		LOG.error("LOGIN FAILURE:"+urlc.getResponseCode());
 		return urlc.getResponseCode();
 	}
 	
@@ -306,7 +306,7 @@ public class JNest {
 	
 	private void handleFailure (HttpsURLConnection urlc) {
 		try {
-			System.out.println(urlc.getResponseCode() + " : " + urlc.getResponseMessage() );
+			LOG.error(urlc.getResponseCode() + " : " + urlc.getResponseMessage() );
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

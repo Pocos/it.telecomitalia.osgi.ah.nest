@@ -7,6 +7,7 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.device.Constants;
 
 import it.telecomitalia.ah.nest.NestDevice;
+import it.telecomitalia.ah.nest.NestDeviceListener;
 import it.telecomitalia.ah.nest.NestHacDevice;
 import it.telecomitalia.osgi.ah.internal.nest.NestDeviceEnum.Type;
 
@@ -58,7 +59,7 @@ public class NestDeviceImpl implements NestDevice, NestHacDevice {
 	@Override
 	public String getPid() {
 		// TODO Auto-generated method stub
-		return null;
+		return id;
 	}
 
 	@Override
@@ -71,6 +72,18 @@ public class NestDeviceImpl implements NestDevice, NestHacDevice {
 	public void noDriverFound() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public boolean setListener(NestDeviceListener nestServiceCluster) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean removeListener(NestDeviceListener nestServiceCluster) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

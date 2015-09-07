@@ -12,7 +12,6 @@ public class Activator implements BundleActivator {
 	}
 
 	public void start(BundleContext context) throws Exception {
-		System.out.println("Trying to interact with NEST Cloud!!");
 		Activator.context = context;
 	}
 

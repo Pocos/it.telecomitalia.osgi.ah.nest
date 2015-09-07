@@ -57,7 +57,7 @@ public class DiscoveryThread implements Runnable, NestDevice {
 				// for the Nest Protect
 				if (thermostats_list != null) {
 					for (String id : thermostats_list.getDeviceIds()) {
-//						LOG.debug("Found Thermostat: {}", id);
+						LOG.debug("Found Thermostat: {}", id);
 
 						/*
 						 * if (System.currentTimeMillis() >
@@ -83,7 +83,7 @@ public class DiscoveryThread implements Runnable, NestDevice {
 				}
 				if (protects_list != null) {
 					for (String id : protects_list.getTopazIds()) {
-//						LOG.debug("Found Protect: {}", id);
+						LOG.debug("Found Protect: {}", id);
 
 						if (list_devices.containsKey(id))
 							continue;
@@ -156,7 +156,7 @@ public class DiscoveryThread implements Runnable, NestDevice {
 
 	@Override
 	public void set(String name, String value) {
-		// TODO Auto-generated method stub
+		LOG.error(name+value);
 
 	}
 
