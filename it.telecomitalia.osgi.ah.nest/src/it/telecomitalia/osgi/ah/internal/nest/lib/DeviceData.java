@@ -60,6 +60,7 @@ public class DeviceData {
 	public boolean learning_mode;
 	public String leaf_learning;
 	public boolean has_aux_heat;
+	public boolean has_emer_heat;
 	public String backplate_bsl_info;
 	public String user_brightness;
 	public double leaf_away_low;
