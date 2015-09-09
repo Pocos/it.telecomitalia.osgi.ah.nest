@@ -1,23 +1,23 @@
 package it.telecomitalia.osgi.ah.internal.nest;
 
 import it.telecomitalia.ah.nest.NestDevice;
-import it.telecomitalia.osgi.ah.internal.nest.NestDeviceEnum.Type;
 import it.telecomitalia.osgi.ah.internal.nest.lib.Device;
+import it.telecomitalia.osgi.ah.internal.nest.lib.DeviceData;
 import it.telecomitalia.osgi.ah.internal.nest.lib.JNest;
+import it.telecomitalia.osgi.ah.internal.nest.lib.MetaDataData;
+import it.telecomitalia.osgi.ah.internal.nest.lib.SharedData;
+import it.telecomitalia.osgi.ah.internal.nest.lib.StructureData;
 import it.telecomitalia.osgi.ah.internal.nest.lib.Topaz;
+import it.telecomitalia.osgi.ah.internal.nest.lib.TopazData;
+import it.telecomitalia.osgi.ah.internal.nest.lib.TrackData;
 
-import org.osgi.service.device.Constants;
-
+import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
 
-import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,14 +71,14 @@ public class DiscoveryThread implements Runnable, NestDevice {
 						// it
 						if (list_devices.containsKey(id))
 							continue;
-						NestDeviceImpl dev=new NestDeviceImpl();
-						ServiceRegistration<?> reg=dev.activate(this,id);
-						list_devices.put(id,dev);
+						NestDeviceImpl dev = new NestDeviceImpl();
+						ServiceRegistration<?> reg = dev.activate(this, id);
+						list_devices.put(id, dev);
 
 						// create a service for each device, and set the
 						// properties
 						// for the service
-						list_services.put(id,reg);
+						list_services.put(id, reg);
 					}
 				}
 				if (protects_list != null) {
@@ -87,10 +87,10 @@ public class DiscoveryThread implements Runnable, NestDevice {
 
 						if (list_devices.containsKey(id))
 							continue;
-						NestDeviceImpl dev=new NestDeviceImpl();
-						ServiceRegistration<?> reg=dev.activate(this,id);
+						NestDeviceImpl dev = new NestDeviceImpl();
+						ServiceRegistration<?> reg = dev.activate(this, id);
 						list_devices.put(id, dev);
-						
+
 						list_services.put(id, reg);
 					}
 
@@ -149,20 +149,73 @@ public class DiscoveryThread implements Runnable, NestDevice {
 		}
 	}
 
-	public String get(String id, String name) {
-		// TODO Auto-generated method stub
+	@Override
+	public void set(String key, String value) {
+	};
+
+	@Override
+	public String get(String key) {
 		return null;
+	};
+
+	public void set(String deviceId, String name, String value) {
+		LOG.error(deviceId + name + value);
+
 	}
 
-	@Override
-	public void set(String name, String value) {
-		LOG.error(name+value);
-
+	/**
+	 * Get the value for the field specified
+	 * @param deviceId The id of the selected device
+	 * @param key The attribute for the specified device
+	 * @return The value for the specified device
+	 */
+	public Object get(String deviceId, String key) {
+		//Cycle for all the fields of the StatusResponse object. Those fields are populated by the JSON parser
+		if (!list_devices.containsKey(deviceId))
+			return null; // implement this to throw a not supported exception
+		Object result=null;
+		DeviceData deviceData = jn.getStatusResponse().getDevices().getDevice(deviceId);
+		if((result=findFieldValue(deviceData, key))!=null){
+			return result;
+		}
+		MetaDataData metaDataData = jn.getStatusResponse().getMetaData().getDevice(deviceId);
+		if((result=findFieldValue(metaDataData, key))!=null){
+			return result;
+		}
+		SharedData sharedData = jn.getStatusResponse().getShareds().getDevice(deviceId);
+		if((result=findFieldValue(sharedData, key))!=null){
+			return result;
+		}
+		StructureData structureData = jn.getStatusResponse().getStructures().getStructure(deviceId);
+		if((result=findFieldValue(structureData, key))!=null){
+			return result;
+		}
+		TrackData trackData = jn.getStatusResponse().getTracks().getTrack(deviceId);
+		if((result=findFieldValue(trackData, key))!=null){
+			return result;
+		}
+		TopazData topazData = jn.getStatusResponse().getTopazs().getTopaz(deviceId);
+		if((result=findFieldValue(topazData, key))!=null){
+			return result;
+		}
+		return null; // implement this to throw a not supported exception
 	}
 
-	@Override
-	public String get(String name) {
-		// TODO Auto-generated method stub
+	private Object findFieldValue(Object objectData, String key) {
+		try {
+			Field[] fields = objectData.getClass().getFields();
+			for (Field f : fields) {
+				if (f.getName().equals(key)) {
+					return f.get(objectData);
+				}
+			}
+		} catch (IllegalArgumentException e) {
+			LOG.error(e.getMessage());
+			return null;
+		} catch (IllegalAccessException e) {
+			LOG.error(e.getMessage());
+			return null;
+		}
 		return null;
 	}
 

@@ -14,42 +14,42 @@ import it.telecomitalia.osgi.ah.internal.nest.NestDeviceEnum.Type;
 public class NestDeviceImpl implements NestDevice, NestHacDevice {
 
 	private DiscoveryThread discovery;
-	private String id;
+	private String deviceId;
 	
 	/*public NestDeviceImpl(DiscoveryThread t, String id) {
 		this.discovery=t;
 		this.id=id;
 	}*/
-	public ServiceRegistration<?> activate(DiscoveryThread t, String id) {
+	public ServiceRegistration<?> activate(DiscoveryThread t, String deviceId) {
 		this.discovery=t;
-		this.id=id;
+		this.deviceId=deviceId;
 		
-		return createService(NestDeviceEnum.Type.THERMOSTAT, id);
+		return createService(NestDeviceEnum.Type.THERMOSTAT, deviceId);
 
 	}
 	
 	@Override
 	public void set(String key, String value) {
-		discovery.set(key, value);
+		discovery.set(this.deviceId,key, value);
 
 	}
 
 	@Override
-	public String get(String key) {
-		return discovery.get(this.id,key);
+	public Object get(String key) {
+		return discovery.get(this.deviceId,key);
 	}
 
 	@Override
 	public String getId() {
-		return id;
+		return deviceId;
 	}
 	
-	private ServiceRegistration<?> createService(Type type, String id) {
+	private ServiceRegistration<?> createService(Type type, String deviceId) {
 		Dictionary<String, Object> props = new Hashtable<String, Object>();
-		props.put("service.pid", id);
+		props.put("service.pid", deviceId);
 		props.put(Constants.DEVICE_CATEGORY, "Nest");
 		props.put("org.nest.device.type", type.toString());
-		props.put(Constants.DEVICE_SERIAL, id);
+		props.put(Constants.DEVICE_SERIAL, deviceId);
 		ServiceRegistration<?> sReg = Activator.getContext().registerService(NestDevice.class.getName(), this, props);
 		return sReg;
 
@@ -59,7 +59,7 @@ public class NestDeviceImpl implements NestDevice, NestHacDevice {
 	@Override
 	public String getPid() {
 		// TODO Auto-generated method stub
-		return id;
+		return deviceId;
 	}
 
 	@Override

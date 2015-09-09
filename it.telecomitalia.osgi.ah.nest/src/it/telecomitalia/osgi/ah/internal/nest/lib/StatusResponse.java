@@ -1,5 +1,8 @@
 package it.telecomitalia.osgi.ah.internal.nest.lib;
 
+import java.lang.reflect.Field;
+import java.util.List;
+
 public class StatusResponse {
 	public Device device;
 	public MetaData metadata;
@@ -39,6 +42,28 @@ public class StatusResponse {
 	
 	public Widget_track getWidget_track(){
 		return widget_track;
+	}
+	
+	public List<String> getUnifiedDataForDeviceId(String deviceId,String key){
+		/*Field [] fields=DeviceData.class.getDeclaredFields();
+		for(Field currentField : fields){
+			currentField
+		}
+		fields.g
+		unified_list.add(fields.toString());
+		fields=MetaDataData.class.getDeclaredFields();
+		unified_list.add(fields.toString());
+		fields=SharedData.class.getDeclaredFields();
+		unified_list.add(fields.toString());
+		fields=StructureData.class.getDeclaredFields();
+		unified_list.add(fields.toString());
+		fields=TrackData.class.getDeclaredFields();
+		unified_list.add(fields.toString());
+		fields=TopazData.class.getDeclaredFields();
+		unified_list.add(fields.toString());
+		UnifiedData uni=new UnifiedData(deviceId,this);
+		return unified_list;*/
+		return null;
 	}
 }
 

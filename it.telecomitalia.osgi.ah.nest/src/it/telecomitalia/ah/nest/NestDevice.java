@@ -1,9 +1,9 @@
 package it.telecomitalia.ah.nest;
 
 public interface NestDevice {
-	public void set(String name, String value);
+	public void set(String key, String value);
 
-	public String get(String name);
+	public Object get(String key);
 
 	public String getId();
 }

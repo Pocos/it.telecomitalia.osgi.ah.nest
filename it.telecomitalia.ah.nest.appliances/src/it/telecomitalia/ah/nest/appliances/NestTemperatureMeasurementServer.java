@@ -13,17 +13,20 @@ public class NestTemperatureMeasurementServer extends NestServiceCluster impleme
 		super();
 	}
 
-	public int getTemperatureValue(IEndPointRequestContext context) throws ApplianceException {
+	public Double getCurrentTemperature(IEndPointRequestContext context) throws ApplianceException {
 		context.getClass().getCanonicalName();
 		NestDevice ab=(NestDevice)getDevice();
-		ab.set("prova", "prova2");
-		int a = 1;
-		a += 1;
-		return 0;
+		return (Double)ab.get("current_temperature");
 	}
 	
 	public boolean notifyFrame(String message) throws Exception {
 		return false;
+	}
+
+	public Double getTargetTemperature(IEndPointRequestContext context) throws ApplianceException {
+		context.getClass().getCanonicalName();
+		NestDevice ab=(NestDevice)getDevice();
+		return (Double)ab.get("target_temperature");
 	}
 
 }
