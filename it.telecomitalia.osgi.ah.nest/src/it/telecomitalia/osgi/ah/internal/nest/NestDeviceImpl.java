@@ -29,8 +29,8 @@ public class NestDeviceImpl implements NestDevice, NestHacDevice {
 	}
 	
 	@Override
-	public void set(String key, String value) {
-		discovery.set(this.deviceId,key, value);
+	public String set(Object json) {
+		return discovery.set(this.deviceId,json);
 
 	}
 

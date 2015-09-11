@@ -1,7 +1,7 @@
 package it.telecomitalia.ah.nest;
 
 public interface NestDevice {
-	public void set(String key, String value);
+	public String set(Object json);
 
 	public Object get(String key);
 

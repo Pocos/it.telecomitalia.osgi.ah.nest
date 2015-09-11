@@ -11,16 +11,22 @@ import it.telecomitalia.osgi.ah.internal.nest.lib.Topaz;
 import it.telecomitalia.osgi.ah.internal.nest.lib.TopazData;
 import it.telecomitalia.osgi.ah.internal.nest.lib.TrackData;
 
+import java.io.DataOutputStream;
 import java.lang.reflect.Field;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.net.ssl.HttpsURLConnection;
+
+import org.json.JSONObject;
 import org.osgi.framework.ServiceRegistration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 public class DiscoveryThread implements Runnable, NestDevice {
 
@@ -150,7 +156,8 @@ public class DiscoveryThread implements Runnable, NestDevice {
 	}
 
 	@Override
-	public void set(String key, String value) {
+	public String set(Object json) {
+		return null;
 	};
 
 	@Override
@@ -158,9 +165,10 @@ public class DiscoveryThread implements Runnable, NestDevice {
 		return null;
 	};
 
-	public void set(String deviceId, String name, String value) {
-		LOG.error(deviceId + name + value);
-
+	public String set(String deviceId, Object json) {
+//		jn.setTemperature(28, deviceId);
+//		return "A";
+		return jn.setParameter(deviceId,json);
 	}
 
 	/**

@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -335,6 +336,45 @@ public class JNest {
 	
 	public void mockStatusResonse (String str) {
 		statusResponse = gson.fromJson(str, StatusResponse.class);
+	}
+
+	public String setParameter(String deviceId, Object json) {
+
+		if (!isLoggedIn)
+			return "Unable to set Parameter";
+	
+		URL url;
+		HttpsURLConnection urlc;
+		String query;
+		
+		try {
+			query=((JSONObject) json).toString();
+			url = new URL(loginResponse.urls.transport_url+"/v2/put/shared."+deviceId);
+			urlc = (HttpsURLConnection) url.openConnection();
+		    urlc.setRequestMethod("POST"); 
+		    urlc.setDoInput(true); 
+		    urlc.setDoOutput(true);
+		    urlc.setRequestProperty("user-agent", userAgent);
+		    urlc.setRequestProperty("Authorization", "Basic " + loginResponse.access_token);
+		    urlc.setRequestProperty("X-nl-protocol-version", "1");
+		    urlc.setRequestProperty("Content-length",String.valueOf (query.length())); 
+		    urlc.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+		    DataOutputStream output = new DataOutputStream( urlc.getOutputStream() );  
+		    output.writeBytes(query);
+		    
+		    switch (urlc.getResponseCode()) {
+			    case HttpsURLConnection.HTTP_OK :
+			    	return "OK";
+			    default :
+			    	return urlc.getResponseCode() + " : " + urlc.getResponseMessage() ;
+		    }
+	
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "Unable to set Parameter";
 	}
 
 }

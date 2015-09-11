@@ -6,6 +6,8 @@ import it.telecomitalia.ah.nest.NestDeviceListener;
 import org.energy_home.jemma.ah.cluster.nest.general.ThermostatServer;
 import org.energy_home.jemma.ah.hac.ApplianceException;
 import org.energy_home.jemma.ah.hac.IEndPointRequestContext;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class NestTemperatureMeasurementServer extends NestServiceCluster implements ThermostatServer,NestDeviceListener {
 
@@ -63,6 +65,20 @@ public class NestTemperatureMeasurementServer extends NestServiceCluster impleme
 		context.getClass().getCanonicalName();
 		NestDevice ab=(NestDevice)getDevice();
 		return (Double)ab.get("current_humidity");
+	}
+
+	public String setTargetTemperature(double targetTemp, IEndPointRequestContext context) throws ApplianceException {
+		try {
+			JSONObject jo = new JSONObject();
+			jo.put("target_change_pending", true);
+			jo.put("target_temperature", targetTemp);
+			context.getClass().getCanonicalName();
+			NestDevice ab=(NestDevice)getDevice();
+			return (String)ab.set(jo);
+		} catch (JSONException e) {
+			return e.getMessage();
+//			e.printStackTrace();
+		}
 	}
 
 
