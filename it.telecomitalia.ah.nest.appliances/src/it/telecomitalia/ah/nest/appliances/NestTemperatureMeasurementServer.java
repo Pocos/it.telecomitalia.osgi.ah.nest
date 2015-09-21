@@ -3,13 +3,13 @@ package it.telecomitalia.ah.nest.appliances;
 import it.telecomitalia.ah.nest.NestDevice;
 import it.telecomitalia.ah.nest.NestDeviceListener;
 
-import org.energy_home.jemma.ah.cluster.nest.general.ThermostatServer;
+import org.energy_home.jemma.ah.cluster.nest.general.NestThermostatServer;
 import org.energy_home.jemma.ah.hac.ApplianceException;
 import org.energy_home.jemma.ah.hac.IEndPointRequestContext;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class NestTemperatureMeasurementServer extends NestServiceCluster implements ThermostatServer,NestDeviceListener {
+public class NestTemperatureMeasurementServer extends NestServiceCluster implements NestThermostatServer,NestDeviceListener {
 
 	public NestTemperatureMeasurementServer() throws ApplianceException {
 		super();
