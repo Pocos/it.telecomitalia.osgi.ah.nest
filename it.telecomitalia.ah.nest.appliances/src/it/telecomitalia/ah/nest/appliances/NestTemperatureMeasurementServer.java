@@ -9,77 +9,103 @@ import org.energy_home.jemma.ah.hac.IEndPointRequestContext;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class NestTemperatureMeasurementServer extends NestServiceCluster implements NestThermostatServer,NestDeviceListener {
+public class NestTemperatureMeasurementServer extends NestServiceCluster implements NestThermostatServer, NestDeviceListener {
 
 	public NestTemperatureMeasurementServer() throws ApplianceException {
 		super();
 	}
 
-	public Double getCurrentTemperature(IEndPointRequestContext context) throws ApplianceException {
-		context.getClass().getCanonicalName();
-		NestDevice ab=(NestDevice)getDevice();
-		return (Double)ab.get("current_temperature");
+	public double getCurrentTemperature(IEndPointRequestContext context) throws ApplianceException {
+		NestDevice ab = (NestDevice) getDevice();
+		if (ab != null) {
+			return ((Double) ab.get("current_temperature")).doubleValue();
+		} else
+			throw new ApplianceException("Not attached");
 	}
-	
+
 	public boolean notifyFrame(String message) throws Exception {
 		return false;
 	}
 
-	public Double getTargetTemperature(IEndPointRequestContext context) throws ApplianceException {
-		context.getClass().getCanonicalName();
-		NestDevice ab=(NestDevice)getDevice();
-		return (Double)ab.get("target_temperature");
+	public double getTargetTemperature(IEndPointRequestContext context) throws ApplianceException {
+		NestDevice ab = (NestDevice) getDevice();
+		if (ab != null) {
+			return ((Double) ab.get("target_temperature")).doubleValue();
+		}else
+			throw new ApplianceException("Not attached");
+		
 	}
 
 	public Boolean canCool(IEndPointRequestContext context) throws ApplianceException {
-		context.getClass().getCanonicalName();
-		NestDevice ab=(NestDevice)getDevice();
-		return (Boolean)ab.get("can_cool");
+		NestDevice ab = (NestDevice) getDevice();
+		if (ab != null) {
+			return (Boolean) ab.get("can_cool");
+		}else
+			throw new ApplianceException("Not attached");
+		
 	}
 
 	public Boolean canHeat(IEndPointRequestContext context) throws ApplianceException {
-		context.getClass().getCanonicalName();
-		NestDevice ab=(NestDevice)getDevice();
-		return (Boolean)ab.get("can_heat");
+		NestDevice ab = (NestDevice) getDevice();
+		if (ab != null) {
+			return (Boolean) ab.get("can_heat");
+		}else
+			throw new ApplianceException("Not attached");
+		
 	}
 
 	public Boolean hasEmergencyHeat(IEndPointRequestContext context) throws ApplianceException {
-		context.getClass().getCanonicalName();
-		NestDevice ab=(NestDevice)getDevice();
-		return (Boolean)ab.get("has_emer_heat");
+		NestDevice ab = (NestDevice) getDevice();
+		if (ab != null) {
+			return (Boolean) ab.get("has_emer_heat");
+		}else
+			throw new ApplianceException("Not attached");
+		
 	}
 
 	public Boolean hasFan(IEndPointRequestContext context) throws ApplianceException {
-		context.getClass().getCanonicalName();
-		NestDevice ab=(NestDevice)getDevice();
-		return (Boolean)ab.get("has_fan");
+		NestDevice ab = (NestDevice) getDevice();
+		if (ab != null) {
+			return (Boolean) ab.get("has_fan");
+		}else
+			throw new ApplianceException("Not attached");
+		
 	}
 
 	public String temperatureScale(IEndPointRequestContext context) throws ApplianceException {
-		context.getClass().getCanonicalName();
-		NestDevice ab=(NestDevice)getDevice();
-		return (String)ab.get("temperature_scale");
+		NestDevice ab = (NestDevice) getDevice();
+		if (ab != null) {
+			return (String) ab.get("temperature_scale");
+		}else
+			throw new ApplianceException("Not attached");
+		
 	}
 
-	public Double currentHmidity(IEndPointRequestContext context) throws ApplianceException {
-		context.getClass().getCanonicalName();
-		NestDevice ab=(NestDevice)getDevice();
-		return (Double)ab.get("current_humidity");
+	public double getcurrentHumidity(IEndPointRequestContext context) throws ApplianceException {
+		NestDevice ab = (NestDevice) getDevice();
+		if (ab != null) {
+			return ((Double) ab.get("current_humidity")).doubleValue();
+		}else
+			throw new ApplianceException("Not attached");
+		
 	}
 
 	public String setTargetTemperature(double targetTemp, IEndPointRequestContext context) throws ApplianceException {
 		try {
-			JSONObject jo = new JSONObject();
-			jo.put("target_change_pending", true);
-			jo.put("target_temperature", targetTemp);
-			context.getClass().getCanonicalName();
-			NestDevice ab=(NestDevice)getDevice();
-			return (String)ab.set(jo);
+			NestDevice ab = (NestDevice) getDevice();
+			if (ab != null) {
+				JSONObject jo = new JSONObject();
+				jo.put("target_change_pending", true);
+				jo.put("target_temperature", targetTemp);
+				
+				return (String) ab.set(jo);
+			}else
+				throw new ApplianceException("Not attached");
+				
+			
 		} catch (JSONException e) {
 			return e.getMessage();
-//			e.printStackTrace();
+			// e.printStackTrace();
 		}
 	}
-
-
 }

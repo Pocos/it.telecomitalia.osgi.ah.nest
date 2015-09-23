@@ -5,6 +5,7 @@ import it.telecomitalia.ah.nest.NestEndPoint;
 import java.util.Dictionary;
 
 import org.energy_home.jemma.ah.hac.ApplianceException;
+import org.energy_home.jemma.ah.hac.IEndPointTypes;
 import org.energy_home.jemma.ah.hac.IHacDevice;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,7 @@ public class NestThermostatAppliance extends NestAppliance{
 		super(pid, config);
 		
 		this.setAvailability(true);
-		endPoint1=this.nestAddEndPoint("Temperature");
+		endPoint1=this.nestAddEndPoint(IEndPointTypes.NEST_THERMOSTAT);
 		endPoint1.addServiceCluster(new NestTemperatureMeasurementServer());
 	}
 	
