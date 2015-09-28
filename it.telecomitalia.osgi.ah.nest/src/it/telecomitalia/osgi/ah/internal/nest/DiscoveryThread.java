@@ -32,7 +32,7 @@ public class DiscoveryThread implements Runnable, NestDevice {
 
 	private static Logger LOG = LoggerFactory.getLogger(DiscoveryThread.class);
 	private JNest jn;
-	private final double TIMEOUT = 50000;
+	private final double TIMEOUT = 1000;
 	private Map<String, NestDevice> list_devices = new HashMap<String, NestDevice>();
 	private Map<String, ServiceRegistration<?>> list_services = new HashMap<String, ServiceRegistration<?>>();
 
