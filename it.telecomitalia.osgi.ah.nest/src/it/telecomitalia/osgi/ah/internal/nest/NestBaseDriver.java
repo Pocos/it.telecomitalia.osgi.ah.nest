@@ -1,14 +1,7 @@
 package it.telecomitalia.osgi.ah.internal.nest;
 
 import it.telecomitalia.osgi.ah.internal.nest.lib.Credentials;
-import it.telecomitalia.osgi.ah.internal.nest.lib.Device;
-import it.telecomitalia.osgi.ah.internal.nest.lib.DeviceData;
 import it.telecomitalia.osgi.ah.internal.nest.lib.JNest;
-import it.telecomitalia.osgi.ah.internal.nest.lib.Topaz;
-import it.telecomitalia.osgi.ah.internal.nest.lib.Track;
-
-import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 
 import org.osgi.service.component.ComponentContext;
@@ -44,7 +37,7 @@ public class NestBaseDriver {
 	protected void unbindLogService(LogService log) {
 
 	}
-
+	
 	protected void modified(Map<String, String> props) throws InterruptedException{
 		t.interrupt();
 		t.join();

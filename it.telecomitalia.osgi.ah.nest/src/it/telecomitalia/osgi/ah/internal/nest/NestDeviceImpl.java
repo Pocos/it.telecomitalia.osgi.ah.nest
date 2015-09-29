@@ -28,18 +28,15 @@ public class NestDeviceImpl implements NestDevice, NestHacDevice {
 
 	}
 	
-	@Override
 	public String set(Object json) {
 		return discovery.set(this.deviceId,json);
 
 	}
 
-	@Override
 	public Object get(String key) {
 		return discovery.get(this.deviceId,key);
 	}
 
-	@Override
 	public String getId() {
 		return deviceId;
 	}
@@ -56,31 +53,26 @@ public class NestDeviceImpl implements NestDevice, NestHacDevice {
 	}
 
 	
-	@Override
 	public String getPid() {
 		// TODO Auto-generated method stub
 		return deviceId;
 	}
 
-	@Override
 	public void remove() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public void noDriverFound() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
 	public boolean setListener(NestDeviceListener nestServiceCluster) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public boolean removeListener(NestDeviceListener nestServiceCluster) {
 		// TODO Auto-generated method stub
 		return false;

@@ -1,6 +1,5 @@
 package it.telecomitalia.osgi.ah.internal.nest.lib;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 public class StatusResponse {

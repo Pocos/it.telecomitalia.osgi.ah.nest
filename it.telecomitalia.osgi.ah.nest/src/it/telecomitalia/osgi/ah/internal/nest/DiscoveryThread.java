@@ -11,18 +11,14 @@ import it.telecomitalia.osgi.ah.internal.nest.lib.Topaz;
 import it.telecomitalia.osgi.ah.internal.nest.lib.TopazData;
 import it.telecomitalia.osgi.ah.internal.nest.lib.TrackData;
 
-import java.io.DataOutputStream;
+
 import java.lang.reflect.Field;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.net.ssl.HttpsURLConnection;
-
-import org.json.JSONObject;
 import org.osgi.framework.ServiceRegistration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +28,7 @@ public class DiscoveryThread implements Runnable, NestDevice {
 
 	private static Logger LOG = LoggerFactory.getLogger(DiscoveryThread.class);
 	private JNest jn;
-	private final double TIMEOUT = 1000;
+	private final int TIMEOUT = 1000;
 	private Map<String, NestDevice> list_devices = new HashMap<String, NestDevice>();
 	private Map<String, ServiceRegistration<?>> list_services = new HashMap<String, ServiceRegistration<?>>();
 
@@ -40,8 +36,7 @@ public class DiscoveryThread implements Runnable, NestDevice {
 		this.jn = jn;
 
 	}
-
-	@Override
+	
 	public void run() {
 		while (!Thread.interrupted()) {
 
@@ -108,8 +103,8 @@ public class DiscoveryThread implements Runnable, NestDevice {
 				// new_th_list.getDeviceIds();
 
 				Set<String> removed_devices = new HashSet<String>(list_devices.keySet());
-				Set<String> th_set = new HashSet<>();
-				Set<String> pr_set = new HashSet<>();
+				Set<String> th_set = new HashSet<String>();
+				Set<String> pr_set = new HashSet<String>();
 				if (thermostats_list != null) {
 					th_set = new HashSet<String>(Arrays.asList(thermostats_list.getDeviceIds()));
 				}
@@ -136,7 +131,7 @@ public class DiscoveryThread implements Runnable, NestDevice {
 				 * list_services.remove(devId); } }
 				 */
 
-				Thread.sleep(5000);
+				Thread.sleep(TIMEOUT);
 			} catch (InterruptedException e) {
 				// e.printStackTrace();
 				LOG.debug("Terminating DiscoveryThread");
@@ -155,12 +150,10 @@ public class DiscoveryThread implements Runnable, NestDevice {
 		}
 	}
 
-	@Override
 	public String set(Object json) {
 		return null;
 	};
 
-	@Override
 	public String get(String key) {
 		return null;
 	};
@@ -227,7 +220,6 @@ public class DiscoveryThread implements Runnable, NestDevice {
 		return null;
 	}
 
-	@Override
 	public String getId() {
 		// TODO Auto-generated method stub
 		return null;
