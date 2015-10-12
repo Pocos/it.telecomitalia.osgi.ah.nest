@@ -5,6 +5,7 @@ Bundle-SymbolicName: it.telecomitalia.osgi.ah.nest
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: com.google.gson;version="2.2.4",
+ javax.net.ssl,
  org.energy_home.jemma.ah.hac;version="3.0.2",
  org.energy_home.jemma.ah.hac.lib;version="3.0.1",
  org.json,

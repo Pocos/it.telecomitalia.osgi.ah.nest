@@ -39,7 +39,6 @@ public class DiscoveryThread implements Runnable, NestDevice {
 	
 	public void run() {
 		while (!Thread.interrupted()) {
-
 			try {
 
 				jn.getStatus();
