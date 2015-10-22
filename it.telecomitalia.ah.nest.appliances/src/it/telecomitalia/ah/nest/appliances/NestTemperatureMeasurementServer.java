@@ -108,4 +108,31 @@ public class NestTemperatureMeasurementServer extends NestServiceCluster impleme
 			// e.printStackTrace();
 		}
 	}
+
+	public boolean getAwayState(IEndPointRequestContext context) throws ApplianceException {
+		NestDevice ab = (NestDevice) getDevice();
+		if (ab != null) {
+			return ((Boolean) ab.get("away")).booleanValue();
+		}else
+			throw new ApplianceException("Not attached");
+	}
+	
+	public String toggleAwayState(IEndPointRequestContext context) throws ApplianceException {
+		try {
+			NestDevice ab = (NestDevice) getDevice();
+			if (ab != null) {
+				boolean last_state=((Boolean) ab.get("away")).booleanValue();
+				JSONObject jo = new JSONObject();
+				jo.put("away", !last_state);
+				
+				return (String) ab.set(jo);
+			}else
+				throw new ApplianceException("Not attached");
+				
+			
+		} catch (JSONException e) {
+			return e.getMessage();
+			// e.printStackTrace();
+		}
+	}
 }

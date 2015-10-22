@@ -338,7 +338,14 @@ public class JNest {
 		statusResponse = gson.fromJson(str, StatusResponse.class);
 	}
 
-	public String setParameter(String deviceId, Object json) {
+	/**
+	 * Send the json to the NEST cloud. 
+	 * @param dataInType The classdata where the key is defined
+	 * @param targetId The target of the action, e.g. it could be a deviceId or a structureId or others, it depends on the class where the key is. Look at the Json format for further explanation
+	 * @param json The action to be performed, it contains the key
+	 * @return
+	 */
+	public String setParameter(String dataInType,String targetId, Object json) {
 
 		if (!isLoggedIn)
 			return "Unable to set Parameter";
@@ -349,7 +356,7 @@ public class JNest {
 		
 		try {
 			query=((JSONObject) json).toString();
-			url = new URL(loginResponse.urls.transport_url+"/v2/put/shared."+deviceId);
+			url = new URL(loginResponse.urls.transport_url+"/v2/put/"+dataInType+"."+targetId);
 			urlc = (HttpsURLConnection) url.openConnection();
 		    urlc.setRequestMethod("POST"); 
 		    urlc.setDoInput(true); 
