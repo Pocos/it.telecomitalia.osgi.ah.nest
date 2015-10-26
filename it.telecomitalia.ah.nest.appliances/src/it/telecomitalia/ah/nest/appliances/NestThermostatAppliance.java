@@ -21,7 +21,7 @@ public class NestThermostatAppliance extends NestAppliance{
 		
 		this.setAvailability(true);
 		endPoint1=this.nestAddEndPoint(IEndPointTypes.NEST_THERMOSTAT);
-		endPoint1.addServiceCluster(new NestTemperatureMeasurementServer());
+		endPoint1.addServiceCluster(new NestThermostatClusterServer());
 	}
 	
 	

@@ -77,8 +77,11 @@ public class DiscoveryThread implements Runnable, NestDevice {
 
 						// if the device_list not already contains the id, add
 						// it
-						if (list_devices.containsKey(id))
+						if (list_devices.containsKey(id)){
+							((NestDeviceImpl) list_devices.get(id)).notifyFrame("Aggiornamento su termostato: "+id);
 							continue;
+						}
+							
 						NestDeviceImpl dev = new NestDeviceImpl();
 						ServiceRegistration<?> reg = dev.activate(this, id);
 						list_devices.put(id, dev);
@@ -87,6 +90,7 @@ public class DiscoveryThread implements Runnable, NestDevice {
 						// properties
 						// for the service
 						list_services.put(id, reg);
+						dev.notifyFrame("Attaccato nuovo termostato");
 					}
 				}
 				if (protects_list != null) {
@@ -100,6 +104,7 @@ public class DiscoveryThread implements Runnable, NestDevice {
 						list_devices.put(id, dev);
 
 						list_services.put(id, reg);
+						dev.notifyFrame("Attaccato nuovo protect");
 					}
 
 				}

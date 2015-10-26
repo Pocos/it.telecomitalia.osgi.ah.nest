@@ -1,6 +1,5 @@
 package it.telecomitalia.ah.nest.appliances;
 
-import it.telecomitalia.ah.nest.NestDevice;
 import it.telecomitalia.ah.nest.NestDeviceListener;
 import it.telecomitalia.ah.nest.NestHacDevice;
 

@@ -8,10 +8,14 @@ import org.energy_home.jemma.ah.hac.ApplianceException;
 import org.energy_home.jemma.ah.hac.IEndPointRequestContext;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class NestTemperatureMeasurementServer extends NestServiceCluster implements NestThermostatServer, NestDeviceListener {
+public class NestThermostatClusterServer extends NestServiceCluster implements NestThermostatServer, NestDeviceListener {
 
-	public NestTemperatureMeasurementServer() throws ApplianceException {
+	private static final Logger LOG = LoggerFactory.getLogger(NestThermostatClusterServer.class);
+	
+	public NestThermostatClusterServer() throws ApplianceException {
 		super();
 	}
 
@@ -21,10 +25,6 @@ public class NestTemperatureMeasurementServer extends NestServiceCluster impleme
 			return ((Double) ab.get("current_temperature")).doubleValue();
 		} else
 			throw new ApplianceException("Not attached");
-	}
-
-	public boolean notifyFrame(String message) throws Exception {
-		return false;
 	}
 
 	public double getTargetTemperature(IEndPointRequestContext context) throws ApplianceException {
@@ -134,5 +134,10 @@ public class NestTemperatureMeasurementServer extends NestServiceCluster impleme
 			return e.getMessage();
 			// e.printStackTrace();
 		}
+	}
+	
+	public boolean notifyFrame(String message) throws Exception {
+		LOG.error(message);
+		return true;
 	}
 }
