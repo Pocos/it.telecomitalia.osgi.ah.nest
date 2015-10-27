@@ -4,6 +4,31 @@ import java.util.ArrayList;
 
 /**
  * This class is used to serialize/deserialize Json for long polling request. It contains all the fields of type FieldValues 
+ * FieldContainer class
+ * 	|
+ * timeout
+ * 	|
+ * session
+ * 	|
+ * objects
+ * 		|
+ * 		FieldValues class
+ * 			|
+ * 			object_revision
+ * 			|
+ * 			object_timestamp
+ * 			|
+ * 			object_key
+ * 			|
+ * 			value
+ * 				|
+ * 				FieldElement class
+ * 					|
+ * 					away
+ * 					|
+ * 					current_temperature
+ * 					|
+ * 					...
  * @author Pocos
  *
  */

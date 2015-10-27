@@ -64,7 +64,9 @@ public class NestAppliance extends DriverAppliance implements NestDeviceListener
 		return (NestEndPoint)this.addEndPoint(new NestEndPoint(endPointType),endPointId);
 	}
 
-	public boolean notifyFrame(String message) throws Exception {
+
+	public boolean notifyFrame(String deviceId, double current_temperature, double current_humidity,
+			double target_temperature, boolean away_state) throws Exception {
 		return false;
 	}
 

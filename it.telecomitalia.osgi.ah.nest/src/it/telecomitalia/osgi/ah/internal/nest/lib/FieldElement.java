@@ -1,8 +1,7 @@
 package it.telecomitalia.osgi.ah.internal.nest.lib;
-
 /**
- * This class is used to serialize/deserialize Json for long polling request.
- * It contains the values for the field specified in object_key. It is an element of the json array of FieldContainer Class
+ * This class is used to serialize/deserialize Json for long polling request. 
+ * It contains all the field value of the element FieldValues of root FieldContainer
  * FieldContainer class
  * 	|
  * timeout
@@ -31,11 +30,9 @@ package it.telecomitalia.osgi.ah.internal.nest.lib;
  * @author Pocos
  *
  */
-public class FieldValues {
-	public String object_key;
-	public long object_timestamp;
-	public long object_revision;
-	public FieldElement value;
-
-	public FieldValues(){}
+public class FieldElement {
+	public double target_temperature;//<from SharedData
+	public double current_temperature;//<from SharedData
+	public double current_humidity; //<from DeviceData
+	public boolean away;//<from StructureData
 }

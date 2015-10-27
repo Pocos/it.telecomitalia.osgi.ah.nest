@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 public class NestThermostatClusterServer extends NestServiceCluster implements NestThermostatServer, NestDeviceListener {
 
 	private static final Logger LOG = LoggerFactory.getLogger(NestThermostatClusterServer.class);
-	
+
 	public NestThermostatClusterServer() throws ApplianceException {
 		super();
 	}
@@ -31,63 +31,63 @@ public class NestThermostatClusterServer extends NestServiceCluster implements N
 		NestDevice ab = (NestDevice) getDevice();
 		if (ab != null) {
 			return ((Double) ab.get("target_temperature")).doubleValue();
-		}else
+		} else
 			throw new ApplianceException("Not attached");
-		
+
 	}
 
 	public Boolean canCool(IEndPointRequestContext context) throws ApplianceException {
 		NestDevice ab = (NestDevice) getDevice();
 		if (ab != null) {
 			return (Boolean) ab.get("can_cool");
-		}else
+		} else
 			throw new ApplianceException("Not attached");
-		
+
 	}
 
 	public Boolean canHeat(IEndPointRequestContext context) throws ApplianceException {
 		NestDevice ab = (NestDevice) getDevice();
 		if (ab != null) {
 			return (Boolean) ab.get("can_heat");
-		}else
+		} else
 			throw new ApplianceException("Not attached");
-		
+
 	}
 
 	public Boolean hasEmergencyHeat(IEndPointRequestContext context) throws ApplianceException {
 		NestDevice ab = (NestDevice) getDevice();
 		if (ab != null) {
 			return (Boolean) ab.get("has_emer_heat");
-		}else
+		} else
 			throw new ApplianceException("Not attached");
-		
+
 	}
 
 	public Boolean hasFan(IEndPointRequestContext context) throws ApplianceException {
 		NestDevice ab = (NestDevice) getDevice();
 		if (ab != null) {
 			return (Boolean) ab.get("has_fan");
-		}else
+		} else
 			throw new ApplianceException("Not attached");
-		
+
 	}
 
 	public String temperatureScale(IEndPointRequestContext context) throws ApplianceException {
 		NestDevice ab = (NestDevice) getDevice();
 		if (ab != null) {
 			return (String) ab.get("temperature_scale");
-		}else
+		} else
 			throw new ApplianceException("Not attached");
-		
+
 	}
 
 	public double getcurrentHumidity(IEndPointRequestContext context) throws ApplianceException {
 		NestDevice ab = (NestDevice) getDevice();
 		if (ab != null) {
 			return ((Double) ab.get("current_humidity")).doubleValue();
-		}else
+		} else
 			throw new ApplianceException("Not attached");
-		
+
 	}
 
 	public String setTargetTemperature(double targetTemp, IEndPointRequestContext context) throws ApplianceException {
@@ -97,12 +97,11 @@ public class NestThermostatClusterServer extends NestServiceCluster implements N
 				JSONObject jo = new JSONObject();
 				jo.put("target_change_pending", true);
 				jo.put("target_temperature", targetTemp);
-				
+
 				return (String) ab.set(jo);
-			}else
+			} else
 				throw new ApplianceException("Not attached");
-				
-			
+
 		} catch (JSONException e) {
 			return e.getMessage();
 			// e.printStackTrace();
@@ -113,31 +112,32 @@ public class NestThermostatClusterServer extends NestServiceCluster implements N
 		NestDevice ab = (NestDevice) getDevice();
 		if (ab != null) {
 			return ((Boolean) ab.get("away")).booleanValue();
-		}else
+		} else
 			throw new ApplianceException("Not attached");
 	}
-	
+
 	public String toggleAwayState(IEndPointRequestContext context) throws ApplianceException {
 		try {
 			NestDevice ab = (NestDevice) getDevice();
 			if (ab != null) {
-				boolean last_state=((Boolean) ab.get("away")).booleanValue();
+				boolean last_state = ((Boolean) ab.get("away")).booleanValue();
 				JSONObject jo = new JSONObject();
 				jo.put("away", !last_state);
-				
+
 				return (String) ab.set(jo);
-			}else
+			} else
 				throw new ApplianceException("Not attached");
-				
-			
+
 		} catch (JSONException e) {
 			return e.getMessage();
 			// e.printStackTrace();
 		}
 	}
-	
-	public boolean notifyFrame(String message) throws Exception {
-		LOG.error(message);
+
+	public boolean notifyFrame(String deviceId, double current_temperature, double current_humidity,
+			double target_temperature, boolean away_state) throws Exception {
+		LOG.error("Update on device:" +deviceId + "Away:"+away_state+"Current Temperature:" +current_temperature
+				+"Current Humidity:"+current_humidity+"Target Temperature:"+target_temperature);
 		return true;
 	}
 }

@@ -11,6 +11,7 @@ import org.osgi.service.device.Constants;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
 
+
 import it.telecomitalia.ah.nest.NestDevice;
 import it.telecomitalia.ah.nest.NestDeviceListener;
 import it.telecomitalia.ah.nest.NestHacDevice;
@@ -83,13 +84,14 @@ public class NestDeviceImpl implements NestDevice, NestHacDevice {
 		return listeners.remove(listener);
 	}
 
-	public void notifyFrame(String message) {
+	public void notifyFrame(String deviceId, double current_temperature, double current_humidity,
+			double target_temperature, boolean away_state) {
 		
 		for (Iterator<NestDeviceListener> iterator = listeners.iterator(); iterator.hasNext();)
 		{
 			NestDeviceListener listener=(NestDeviceListener)iterator.next();
 			try {
-				listener.notifyFrame(message);
+				listener.notifyFrame(deviceId,current_temperature,current_humidity,target_temperature,away_state);
 			} catch (Exception e){
 				e.printStackTrace();
 			}

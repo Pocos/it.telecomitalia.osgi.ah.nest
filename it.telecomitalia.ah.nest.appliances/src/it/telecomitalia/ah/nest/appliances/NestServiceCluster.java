@@ -15,10 +15,10 @@ public class NestServiceCluster extends ServiceCluster implements NestDeviceList
 		super();
 	}
 
-	public NestHacDevice getDevice(){
+	public NestHacDevice getDevice() {
 		return device;
 	}
-	
+
 	public void nestAttach(NestHacDevice device) {
 		device.setListener(this);
 		this.device = device;
@@ -61,7 +61,8 @@ public class NestServiceCluster extends ServiceCluster implements NestDeviceList
 		return serviceClusters[0];
 	}
 
-	public boolean notifyFrame(String message) throws Exception {
+	public boolean notifyFrame(String deviceId, double current_temperature, double current_humidity,
+			double target_temperature, boolean away_state) throws Exception {
 		return false;
 	}
 }
