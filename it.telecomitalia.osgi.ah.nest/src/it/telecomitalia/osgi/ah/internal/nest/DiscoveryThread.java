@@ -10,21 +10,12 @@ import it.telecomitalia.osgi.ah.internal.nest.lib.StructureData;
 import it.telecomitalia.osgi.ah.internal.nest.lib.Topaz;
 import it.telecomitalia.osgi.ah.internal.nest.lib.TopazData;
 import it.telecomitalia.osgi.ah.internal.nest.lib.TrackData;
-
-
-
-
-
-
-
 import java.lang.reflect.Field;
-import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.osgi.framework.ServiceRegistration;
@@ -78,14 +69,16 @@ public class DiscoveryThread implements Runnable, NestDevice {
 						// if the device_list not already contains the id, add
 						// it
 						if (list_devices.containsKey(id)){
-							((NestDeviceImpl) list_devices.get(id)).notifyFrame("Aggiornamento su termostato: "+id);
 							continue;
 						}
 							
 						NestDeviceImpl dev = new NestDeviceImpl();
 						ServiceRegistration<?> reg = dev.activate(this, id);
 						list_devices.put(id, dev);
-
+						//The structureId always contains one item, so i get the first one. I pass dev in such a way that the child thread will manage his own messages
+						ThermostatThread tt=new ThermostatThread(dev,jn,id,jn.getStatusResponse().getStructures().getStructureIds()[0]);
+						Thread t1=new Thread(tt);
+						t1.start();
 						// create a service for each device, and set the
 						// properties
 						// for the service

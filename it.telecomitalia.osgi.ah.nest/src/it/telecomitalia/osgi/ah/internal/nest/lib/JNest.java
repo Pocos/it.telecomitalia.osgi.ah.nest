@@ -124,6 +124,9 @@ public class JNest {
 		
 	}
 	
+	/*
+	 * NOT USED. USED IN PAST. SCHEDULED FOR DELETION
+	 */
 	public void setTemperature (double temp, String deviceId) {
 		
 		if (!isLoggedIn)
@@ -167,6 +170,9 @@ public class JNest {
 		
 	}
 	
+	/*
+	 * NOT USED. USED IN PAST. SCHEDULED FOR DELETION
+	 */
 	public void setTemperature (double temp) {
 		try {
 			setTemperature(temp, getStatusResponse().getMetaData().getDeviceIds()[0]);
@@ -175,6 +181,9 @@ public class JNest {
 		}
 	}
 	
+	/*
+	 * NOT USED. USED IN PAST. SCHEDULED FOR DELETION
+	 */
 	public void setFanMode (FanModeEnum fanMode, String deviceId) {
 		
 		if (!isLoggedIn)
@@ -218,6 +227,9 @@ public class JNest {
 		
 	}
 	
+	/*
+	 * NOT USED. USED IN PAST. SCHEDULED FOR DELETION
+	 */
 	public void setFanMode (FanModeEnum fanMode) {
 		try {
 			setFanMode(fanMode, getStatusResponse().getMetaData().getDeviceIds()[0]);
@@ -226,6 +238,9 @@ public class JNest {
 		}
 	}
 	
+	/*
+	 * NOT USED. USED IN PAST. SCHEDULED FOR DELETION
+	 */
 	public void setTemperatureMode (TemperatureModeEnum temperatureMode, String deviceId) {
 		
 		if (!isLoggedIn)
@@ -269,6 +284,9 @@ public class JNest {
 		
 	}
 	
+	/*
+	 * NOT USED. USED IN PAST. SCHEDULED FOR DELETION
+	 */
 	public void setTemperatureMode (TemperatureModeEnum temperatureMode) {
 		try {
 			setTemperatureMode(temperatureMode, getStatusResponse().getMetaData().getDeviceIds()[0]);
@@ -384,4 +402,62 @@ public class JNest {
 		return "Unable to set Parameter";
 	}
 
+	/**
+	 * With this method we listen for changes on Nest Thermostat Device
+	 * @param dataInType
+	 * @param targetId
+	 * @param json
+	 * @return
+	 */
+	public String longPollingNest(String poll_json) {
+
+		if (!isLoggedIn)
+			return "Unable to listen for Changes";
+	
+		URL url;
+		HttpsURLConnection urlc;
+//		String query="{ \"objects\":["
+//				+ " { \"object_key\":\"where.6e953e40-23dc-11e5-898f-22000bb5a0dd\", \"object_timestamp\":1436186535973, \"object_revision\":29625 },"
+//				+ " { \"object_key\":\"message.02AA01AC09140922\", \"object_timestamp\":1436190216315, \"object_revision\":-16703 }, "
+//				+ "{ \"object_key\":\"shared.02AA01AC09140922\", \"object_timestamp\":1445939044288, \"object_revision\":-22640 },"
+//				+ " { \"object_key\":\"device_alert_dialog.02AA01AC09140922\", \"object_timestamp\":1436190210522, \"object_revision\":-9488 },"
+//				+ " { \"object_key\":\"user.2163221\", \"object_timestamp\":1436186535973, \"object_revision\":-17462 },"
+//				+ " { \"object_key\":\"device.02AA01AC09140922\", \"object_timestamp\":1445938515285, \"object_revision\":23117 },"
+//				+ " { \"object_key\":\"structure.6e953e40-23dc-11e5-898f-22000bb5a0dd\", \"object_timestamp\":1445929709611, \"object_revision\":-31926 },"
+//				+ " { \"object_key\":\"user_settings.2163221\", \"object_timestamp\":1436187835319, \"object_revision\":-20290 },"
+//				+ " { \"object_key\":\"metadata.02AA01AC09140922\", \"object_timestamp\":1356998400000, \"object_revision\":-1 },"
+//				+ " { \"object_key\":\"track.02AA01AC09140922\", \"object_timestamp\":1445939044288, \"object_revision\":14660 },"
+//				+ " { \"object_key\":\"structure_metadata.6e953e40-23dc-11e5-898f-22000bb5a0dd\", \"object_timestamp\":1436186536124, \"object_revision\":1239 } ],"
+//				+ " \"timeout\":1017, \"session\":\"2163221.85759.1445870206001\" }";
+		
+		try {
+			url = new URL(loginResponse.urls.transport_url+"/v5/subscribe");
+			urlc = (HttpsURLConnection) url.openConnection();
+		    urlc.setRequestMethod("POST"); 
+		    urlc.setDoInput(true); 
+		    urlc.setDoOutput(true);
+		    urlc.setRequestProperty("user-agent", userAgent);
+		    urlc.setRequestProperty("Authorization", "Basic " + loginResponse.access_token);
+		    urlc.setRequestProperty("X-nl-protocol-version", "1");
+		    urlc.setRequestProperty("Content-length",String.valueOf (poll_json.length())); 
+		    urlc.setRequestProperty("Content-Type","application/x-www-form-urlencoded");
+		    DataOutputStream output = new DataOutputStream( urlc.getOutputStream() );  
+		    output.writeBytes(poll_json);
+		    
+		    switch (urlc.getResponseCode()) {
+			    case HttpsURLConnection.HTTP_OK :
+			    	StringBuffer buffer = Util.getStringBufferFromResponse(urlc);
+			    	return buffer.toString();
+			    default :
+			    	LOG.error(urlc.getResponseCode() + " : " + urlc.getResponseMessage());
+			    	return "" ;
+		    }
+	
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "Unable to set Parameter";
+	}
 }

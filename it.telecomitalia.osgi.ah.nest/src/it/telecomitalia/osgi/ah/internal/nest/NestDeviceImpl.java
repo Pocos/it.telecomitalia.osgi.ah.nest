@@ -8,8 +8,8 @@ import java.util.List;
 
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.device.Constants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
 import it.telecomitalia.ah.nest.NestDevice;
 import it.telecomitalia.ah.nest.NestDeviceListener;
@@ -20,8 +20,8 @@ public class NestDeviceImpl implements NestDevice, NestHacDevice {
 
 	private DiscoveryThread discovery;
 	private String deviceId;
-	private List listeners = new ArrayList();
-	private static Logger LOG = LoggerFactory.getLogger(NestDeviceImpl.class);
+	private List<NestDeviceListener> listeners = new ArrayList<NestDeviceListener>();
+//	private static Logger LOG = LoggerFactory.getLogger(NestDeviceImpl.class);
 
 	/*
 	 * public NestDeviceImpl(DiscoveryThread t, String id) { this.discovery=t;
@@ -84,8 +84,8 @@ public class NestDeviceImpl implements NestDevice, NestHacDevice {
 	}
 
 	public void notifyFrame(String message) {
-		LOG.error("Notify NestDeviceImpl");
-		for (Iterator iterator = listeners.iterator(); iterator.hasNext();)
+		
+		for (Iterator<NestDeviceListener> iterator = listeners.iterator(); iterator.hasNext();)
 		{
 			NestDeviceListener listener=(NestDeviceListener)iterator.next();
 			try {
