@@ -6,6 +6,7 @@ import it.telecomitalia.ah.nest.NestDeviceListener;
 import org.energy_home.jemma.ah.cluster.nest.general.NestThermostatServer;
 import org.energy_home.jemma.ah.hac.ApplianceException;
 import org.energy_home.jemma.ah.hac.IEndPointRequestContext;
+import org.energy_home.jemma.ah.hac.lib.AttributeValue;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -136,8 +137,26 @@ public class NestThermostatClusterServer extends NestServiceCluster implements N
 
 	public boolean notifyFrame(String deviceId, double current_temperature, double current_humidity,
 			double target_temperature, boolean away_state) throws Exception {
-		LOG.error("Update on device:" +deviceId + "Away:"+away_state+"Current Temperature:" +current_temperature
-				+"Current Humidity:"+current_humidity+"Target Temperature:"+target_temperature);
+		LOG.error("Update on device:" + deviceId + "Away:" + away_state + "Current Temperature:" + current_temperature
+				+ "Current Humidity:" + current_humidity + "Target Temperature:" + target_temperature);
+
+		Double target_temp = new Double(target_temperature);
+		Boolean away = new Boolean(away_state);
+		Double current_hum = new Double(current_humidity);
+		Double current_temp = new Double(current_temperature);
+
+		AttributeValue away_attrValue = new AttributeValue(away, System.currentTimeMillis());
+		notifyAttributeValue(NestThermostatServer.ATTR_Away_NAME, away_attrValue);
+
+		AttributeValue current_hum_attrValue = new AttributeValue(current_hum, System.currentTimeMillis());
+		notifyAttributeValue(NestThermostatServer.ATTR_currentHmidity_NAME, current_hum_attrValue);
+
+		AttributeValue target_temp_attrValue = new AttributeValue(target_temp, System.currentTimeMillis());
+		notifyAttributeValue(NestThermostatServer.ATTR_TargetTemperature_NAME, target_temp_attrValue);
+
+		AttributeValue current_temp_attrValue = new AttributeValue(current_temp, System.currentTimeMillis());
+		notifyAttributeValue(NestThermostatServer.ATTR_CurrentTemperature_NAME, current_temp_attrValue);
+
 		return true;
 	}
 }
