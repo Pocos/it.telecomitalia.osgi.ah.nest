@@ -1,21 +1,25 @@
 package it.telecomitalia.osgi.ah.internal.nest.lib;
 
-import it.telecomitalia.osgi.ah.internal.nest.DiscoveryThread;
-
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
+<<<<<<< HEAD
 
 import javax.net.ssl.HttpsURLConnection;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+=======
+import java.util.logging.Logger;
+>>>>>>> 261fb466bc44b23979a2e728bf251c8a59602b8f
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import it.telecomitalia.osgi.ah.internal.nest.DiscoveryThread;
 
 public class JNest {
 
@@ -297,7 +301,17 @@ public class JNest {
 			// do something
 		}
 	}
+<<<<<<< HEAD
 
+=======
+	
+/**
+ * This method handles the successful login request from Nest Cloud by mean of populating the LoginResponse class
+ * @param urlc The url connection of the successful response
+ * @return the response code of the Nest Cloud
+ * @throws IOException
+ */
+>>>>>>> 261fb466bc44b23979a2e728bf251c8a59602b8f
 	public int handleLoginSuccess(HttpsURLConnection urlc) throws IOException {
 
 		StringBuffer buffer = Util.getStringBufferFromResponse(urlc);
