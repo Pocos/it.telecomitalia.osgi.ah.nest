@@ -1,25 +1,21 @@
 package it.telecomitalia.osgi.ah.internal.nest.lib;
 
+import it.telecomitalia.osgi.ah.internal.nest.DiscoveryThread;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
-<<<<<<< HEAD
 
 import javax.net.ssl.HttpsURLConnection;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-=======
-import java.util.logging.Logger;
->>>>>>> 261fb466bc44b23979a2e728bf251c8a59602b8f
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import it.telecomitalia.osgi.ah.internal.nest.DiscoveryThread;
 
 public class JNest {
 
@@ -134,184 +130,144 @@ public class JNest {
 	/*
 	 * NOT USED. USED IN PAST. SCHEDULED FOR DELETION
 	 */
-	public void setTemperature(double temp, String deviceId) {
-
-		if (!isLoggedIn)
-			return;
-
-		URL url;
-		HttpsURLConnection urlc;
-		String query;
-
-		try {
-			TempChange req = new TempChange();
-			req.target_change_pending = true;
-			req.target_temperature = temp;
-			query = gson.toJson(req);
-			url = new URL(loginResponse.urls.transport_url + "/v2/put/shared." + deviceId);
-			urlc = (HttpsURLConnection) url.openConnection();
-			urlc.setRequestMethod("POST");
-			urlc.setDoInput(true);
-			urlc.setDoOutput(true);
-			urlc.setRequestProperty("user-agent", userAgent);
-			urlc.setRequestProperty("Authorization", "Basic " + loginResponse.access_token);
-			urlc.setRequestProperty("X-nl-protocol-version", "1");
-			urlc.setRequestProperty("Content-length", String.valueOf(query.length()));
-			urlc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-			DataOutputStream output = new DataOutputStream(urlc.getOutputStream());
-			output.writeBytes(query);
-
-			switch (urlc.getResponseCode()) {
-			case HttpsURLConnection.HTTP_OK:
-				handleSuccess(urlc);
-				break;
-			default:
-				handleFailure(urlc);
-			}
-
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
+	/*
+	 * public void setTemperature(double temp, String deviceId) {
+	 * 
+	 * if (!isLoggedIn) return;
+	 * 
+	 * URL url; HttpsURLConnection urlc; String query;
+	 * 
+	 * try { TempChange req = new TempChange(); req.target_change_pending =
+	 * true; req.target_temperature = temp; query = gson.toJson(req); url = new
+	 * URL(loginResponse.urls.transport_url + "/v2/put/shared." + deviceId);
+	 * urlc = (HttpsURLConnection) url.openConnection();
+	 * urlc.setRequestMethod("POST"); urlc.setDoInput(true);
+	 * urlc.setDoOutput(true); urlc.setRequestProperty("user-agent", userAgent);
+	 * urlc.setRequestProperty("Authorization", "Basic " +
+	 * loginResponse.access_token);
+	 * urlc.setRequestProperty("X-nl-protocol-version", "1");
+	 * urlc.setRequestProperty("Content-length",
+	 * String.valueOf(query.length())); urlc.setRequestProperty("Content-Type",
+	 * "application/x-www-form-urlencoded"); DataOutputStream output = new
+	 * DataOutputStream(urlc.getOutputStream()); output.writeBytes(query);
+	 * 
+	 * switch (urlc.getResponseCode()) { case HttpsURLConnection.HTTP_OK:
+	 * handleSuccess(urlc); break; default: handleFailure(urlc); }
+	 * 
+	 * } catch (MalformedURLException e) { e.printStackTrace(); } catch
+	 * (IOException e) { e.printStackTrace(); }
+	 * 
+	 * }
+	 */
 
 	/*
 	 * NOT USED. USED IN PAST. SCHEDULED FOR DELETION
 	 */
-	public void setTemperature(double temp) {
-		try {
-			setTemperature(temp, getStatusResponse().getMetaData().getDeviceIds()[0]);
-		} catch (Exception e) {
-			// do something..
-		}
-	}
+	/*
+	 * public void setTemperature(double temp) { try { setTemperature(temp,
+	 * getStatusResponse().getMetaData().getDeviceIds()[0]); } catch (Exception
+	 * e) { // do something.. } }
+	 */
 
 	/*
 	 * NOT USED. USED IN PAST. SCHEDULED FOR DELETION
 	 */
-	public void setFanMode(FanModeEnum fanMode, String deviceId) {
-
-		if (!isLoggedIn)
-			return;
-
-		URL url;
-		HttpsURLConnection urlc;
-		String query;
-
-		try {
-
-			FanMode req = new FanMode();
-			req.fan_mode = fanMode;
-			query = gson.toJson(req);
-			url = new URL(loginResponse.urls.transport_url + "/v2/put/device." + deviceId);
-			urlc = (HttpsURLConnection) url.openConnection();
-			urlc.setRequestMethod("POST");
-			urlc.setDoInput(true);
-			urlc.setDoOutput(true);
-			urlc.setRequestProperty("user-agent", userAgent);
-			urlc.setRequestProperty("Authorization", "Basic " + loginResponse.access_token);
-			urlc.setRequestProperty("X-nl-protocol-version", "1");
-			urlc.setRequestProperty("Content-length", String.valueOf(query.length()));
-			urlc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-			DataOutputStream output = new DataOutputStream(urlc.getOutputStream());
-			output.writeBytes(query);
-
-			switch (urlc.getResponseCode()) {
-			case HttpsURLConnection.HTTP_OK:
-				handleSuccess(urlc);
-				break;
-			default:
-				handleFailure(urlc);
-			}
-
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
+	/*
+	 * public void setFanMode(FanModeEnum fanMode, String deviceId) {
+	 * 
+	 * if (!isLoggedIn) return;
+	 * 
+	 * URL url; HttpsURLConnection urlc; String query;
+	 * 
+	 * try {
+	 * 
+	 * FanMode req = new FanMode(); req.fan_mode = fanMode; query =
+	 * gson.toJson(req); url = new URL(loginResponse.urls.transport_url +
+	 * "/v2/put/device." + deviceId); urlc = (HttpsURLConnection)
+	 * url.openConnection(); urlc.setRequestMethod("POST");
+	 * urlc.setDoInput(true); urlc.setDoOutput(true);
+	 * urlc.setRequestProperty("user-agent", userAgent);
+	 * urlc.setRequestProperty("Authorization", "Basic " +
+	 * loginResponse.access_token);
+	 * urlc.setRequestProperty("X-nl-protocol-version", "1");
+	 * urlc.setRequestProperty("Content-length",
+	 * String.valueOf(query.length())); urlc.setRequestProperty("Content-Type",
+	 * "application/x-www-form-urlencoded"); DataOutputStream output = new
+	 * DataOutputStream(urlc.getOutputStream()); output.writeBytes(query);
+	 * 
+	 * switch (urlc.getResponseCode()) { case HttpsURLConnection.HTTP_OK:
+	 * handleSuccess(urlc); break; default: handleFailure(urlc); }
+	 * 
+	 * } catch (MalformedURLException e) { e.printStackTrace(); } catch
+	 * (IOException e) { e.printStackTrace(); }
+	 * 
+	 * }
+	 */
 
 	/*
 	 * NOT USED. USED IN PAST. SCHEDULED FOR DELETION
 	 */
-	public void setFanMode(FanModeEnum fanMode) {
-		try {
-			setFanMode(fanMode, getStatusResponse().getMetaData().getDeviceIds()[0]);
-		} catch (Exception e) {
-			// do something
-		}
-	}
+	/*
+	 * public void setFanMode(FanModeEnum fanMode) { try { setFanMode(fanMode,
+	 * getStatusResponse().getMetaData().getDeviceIds()[0]); } catch (Exception
+	 * e) { // do something } }
+	 */
 
 	/*
 	 * NOT USED. USED IN PAST. SCHEDULED FOR DELETION
 	 */
-	public void setTemperatureMode(TemperatureModeEnum temperatureMode, String deviceId) {
-
-		if (!isLoggedIn)
-			return;
-
-		URL url;
-		HttpsURLConnection urlc;
-		String query;
-
-		try {
-
-			TemperatureMode req = new TemperatureMode();
-			req.target_temperature_type = temperatureMode;
-			query = gson.toJson(req);
-			url = new URL(loginResponse.urls.transport_url + "/v2/put/shared." + deviceId);
-			urlc = (HttpsURLConnection) url.openConnection();
-			urlc.setRequestMethod("POST");
-			urlc.setDoInput(true);
-			urlc.setDoOutput(true);
-			urlc.setRequestProperty("user-agent", userAgent);
-			urlc.setRequestProperty("Authorization", "Basic " + loginResponse.access_token);
-			urlc.setRequestProperty("X-nl-protocol-version", "1");
-			urlc.setRequestProperty("Content-length", String.valueOf(query.length()));
-			urlc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-			DataOutputStream output = new DataOutputStream(urlc.getOutputStream());
-			output.writeBytes(query);
-
-			switch (urlc.getResponseCode()) {
-			case HttpsURLConnection.HTTP_OK:
-				handleSuccess(urlc);
-				break;
-			default:
-				handleFailure(urlc);
-			}
-
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-	}
+	/*
+	 * public void setTemperatureMode(TemperatureModeEnum temperatureMode,
+	 * String deviceId) {
+	 * 
+	 * if (!isLoggedIn) return;
+	 * 
+	 * URL url; HttpsURLConnection urlc; String query;
+	 * 
+	 * try {
+	 * 
+	 * TemperatureMode req = new TemperatureMode(); req.target_temperature_type
+	 * = temperatureMode; query = gson.toJson(req); url = new
+	 * URL(loginResponse.urls.transport_url + "/v2/put/shared." + deviceId);
+	 * urlc = (HttpsURLConnection) url.openConnection();
+	 * urlc.setRequestMethod("POST"); urlc.setDoInput(true);
+	 * urlc.setDoOutput(true); urlc.setRequestProperty("user-agent", userAgent);
+	 * urlc.setRequestProperty("Authorization", "Basic " +
+	 * loginResponse.access_token);
+	 * urlc.setRequestProperty("X-nl-protocol-version", "1");
+	 * urlc.setRequestProperty("Content-length",
+	 * String.valueOf(query.length())); urlc.setRequestProperty("Content-Type",
+	 * "application/x-www-form-urlencoded"); DataOutputStream output = new
+	 * DataOutputStream(urlc.getOutputStream()); output.writeBytes(query);
+	 * 
+	 * switch (urlc.getResponseCode()) { case HttpsURLConnection.HTTP_OK:
+	 * handleSuccess(urlc); break; default: handleFailure(urlc); }
+	 * 
+	 * } catch (MalformedURLException e) { e.printStackTrace(); } catch
+	 * (IOException e) { e.printStackTrace(); }
+	 * 
+	 * }
+	 */
 
 	/*
 	 * NOT USED. USED IN PAST. SCHEDULED FOR DELETION
 	 */
-	public void setTemperatureMode(TemperatureModeEnum temperatureMode) {
-		try {
-			setTemperatureMode(temperatureMode, getStatusResponse().getMetaData().getDeviceIds()[0]);
-		} catch (Exception e) {
-			// do something
-		}
-	}
-<<<<<<< HEAD
+	/*
+	 * public void setTemperatureMode(TemperatureModeEnum temperatureMode) { try
+	 * { setTemperatureMode(temperatureMode,
+	 * getStatusResponse().getMetaData().getDeviceIds()[0]); } catch (Exception
+	 * e) { // do something } }
+	 */
 
-=======
-	
-/**
- * This method handles the successful login request from Nest Cloud by mean of populating the LoginResponse class
- * @param urlc The url connection of the successful response
- * @return the response code of the Nest Cloud
- * @throws IOException
- */
->>>>>>> 261fb466bc44b23979a2e728bf251c8a59602b8f
+	/**
+	 * This method handles the successful login request from Nest Cloud by mean
+	 * of populating the LoginResponse class
+	 * 
+	 * @param urlc
+	 *            The url connection of the successful response
+	 * @return the response code of the Nest Cloud
+	 * @throws IOException
+	 */
 	public int handleLoginSuccess(HttpsURLConnection urlc) throws IOException {
 
 		StringBuffer buffer = Util.getStringBufferFromResponse(urlc);
@@ -321,6 +277,16 @@ public class JNest {
 
 	}
 
+	/**
+	 * Handle the successful request of the status of the devices registered to
+	 * an user. It populates all the classes by deserialize the received JSON.
+	 * The parent class is StatusResponse, which contains all the subclasses
+	 * with the parameters
+	 * 
+	 * @param urlc
+	 *            The url connection of the successful response
+	 * @throws IOException
+	 */
 	public void handleStatusSuccess(HttpsURLConnection urlc) throws IOException {
 		StringBuffer buffer = Util.getStringBufferFromResponse(urlc);
 		statusResponse = gson.fromJson(buffer.toString(), StatusResponse.class);
@@ -335,18 +301,16 @@ public class JNest {
 		LOG.debug(urlc.getResponseMessage());
 	}
 
-	private void handleSuccess(HttpsURLConnection urlc) {
-
-	}
-
-	private void handleFailure(HttpsURLConnection urlc) {
-		try {
-			LOG.error(urlc.getResponseCode() + " : " + urlc.getResponseMessage());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
+	/*
+	 * NOT USED. Scheduled for deletion private void
+	 * handleSuccess(HttpsURLConnection urlc) {
+	 * 
+	 * }
+	 * 
+	 * private void handleFailure(HttpsURLConnection urlc) { try {
+	 * LOG.error(urlc.getResponseCode() + " : " + urlc.getResponseMessage()); }
+	 * catch (IOException e) { e.printStackTrace(); } }
+	 */
 	/**
 	 * This method return the object variable associated to the JSON obtained by
 	 * a previous call of <b>getStatus()</b> method. Call getStatusResponse()
@@ -363,7 +327,8 @@ public class JNest {
 	}
 
 	/**
-	 * Set the credentials of the main JNest Object
+	 * Set the credentials of the main JNest Object. The credentials are the
+	 * couple username-password set with the configuration manager
 	 * 
 	 * @param credentials
 	 */
@@ -428,7 +393,8 @@ public class JNest {
 	}
 
 	/**
-	 * With this method we listen for changes on Nest Thermostat Device
+	 * With this method we listen for changes on Nest Thermostat Device. It
+	 * makes a long poll request to Nest Cloud.
 	 * 
 	 * @param dataInType
 	 * @param targetId

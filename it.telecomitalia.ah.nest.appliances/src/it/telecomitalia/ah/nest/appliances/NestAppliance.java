@@ -13,18 +13,17 @@ import org.energy_home.jemma.ah.hac.lib.DriverAppliance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class NestAppliance extends DriverAppliance implements NestDeviceListener{
+public class NestAppliance extends DriverAppliance implements NestDeviceListener {
 
-	private static final Logger LOG=LoggerFactory.getLogger(NestAppliance.class);
-	
+	private static final Logger LOG = LoggerFactory.getLogger(NestAppliance.class);
+
 	protected NestAppliance(String pid, Dictionary config) throws ApplianceException {
 		super(pid, config);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void attach(IHacDevice device) throws ApplianceException {
-		
+
 		NestEndPoint serviceEndPoint = null;
 		serviceEndPoint = (NestEndPoint) getEndPoint(1);
 		if (serviceEndPoint == null) {
@@ -45,25 +44,24 @@ public class NestAppliance extends DriverAppliance implements NestDeviceListener
 				continue;
 			}
 		}
-		
+
 		LOG.debug("Attached Nest");
-		
+
 	}
 
 	@Override
 	public void detach(IHacDevice device) throws ApplianceException {
 		LOG.debug("Detached Nest");
-		
-	}
-	
-	public NestEndPoint nestAddEndPoint(String endPointType) throws ApplianceException{
-		return (NestEndPoint)this.addEndPoint(new NestEndPoint(endPointType));
-	}
-	
-	public NestEndPoint nestAddEndPoint(String endPointType,int endPointId) throws ApplianceException{
-		return (NestEndPoint)this.addEndPoint(new NestEndPoint(endPointType),endPointId);
+
 	}
 
+	public NestEndPoint nestAddEndPoint(String endPointType) throws ApplianceException {
+		return (NestEndPoint) this.addEndPoint(new NestEndPoint(endPointType));
+	}
+
+	public NestEndPoint nestAddEndPoint(String endPointType, int endPointId) throws ApplianceException {
+		return (NestEndPoint) this.addEndPoint(new NestEndPoint(endPointType), endPointId);
+	}
 
 	public boolean notifyFrame(String deviceId, double current_temperature, double current_humidity,
 			double target_temperature, boolean away_state) throws Exception {

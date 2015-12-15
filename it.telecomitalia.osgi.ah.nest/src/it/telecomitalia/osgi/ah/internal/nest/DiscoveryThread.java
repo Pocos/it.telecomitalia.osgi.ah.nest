@@ -1,13 +1,5 @@
 package it.telecomitalia.osgi.ah.internal.nest;
 
-import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.logging.Logger;
-
 import it.telecomitalia.ah.nest.NestDevice;
 import it.telecomitalia.osgi.ah.internal.nest.lib.Device;
 import it.telecomitalia.osgi.ah.internal.nest.lib.DeviceData;
@@ -19,6 +11,24 @@ import it.telecomitalia.osgi.ah.internal.nest.lib.Topaz;
 import it.telecomitalia.osgi.ah.internal.nest.lib.TopazData;
 import it.telecomitalia.osgi.ah.internal.nest.lib.TrackData;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.osgi.framework.ServiceRegistration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * 
+ * 
+ *
+ */
 public class DiscoveryThread implements Runnable, NestDevice {
 
 	private static Logger LOG = LoggerFactory.getLogger(DiscoveryThread.class);
@@ -36,8 +46,10 @@ public class DiscoveryThread implements Runnable, NestDevice {
 	}
 
 	/**
-	 * When the Thread runs it loops every 4 seconds by asking to Nest Cloud how many device (id any) are connected. It manages insertions,
-	 * deletions and updates of the devices. If a device is found it creates an instance of NestDeviceImpl
+	 * When the Thread runs it loops every 4 seconds by asking to Nest Cloud how
+	 * many device (id any) are connected. It manages insertions, deletions and
+	 * updates of the devices. If a device is found it creates an instance of
+	 * NestDeviceImpl
 	 */
 	public void run() {
 		while (!Thread.interrupted()) {
@@ -91,7 +103,7 @@ public class DiscoveryThread implements Runnable, NestDevice {
 						// properties
 						// for the service
 						list_services.put(id, reg);
-//						dev.notifyFrame("Attaccato nuovo termostato");
+						// dev.notifyFrame("Attaccato nuovo termostato");
 					}
 				}
 				if (protects_list != null) {
@@ -105,7 +117,7 @@ public class DiscoveryThread implements Runnable, NestDevice {
 						list_devices.put(id, dev);
 
 						list_services.put(id, reg);
-//						dev.notifyFrame("Attaccato nuovo protect");
+						// dev.notifyFrame("Attaccato nuovo protect");
 					}
 
 				}
@@ -144,8 +156,7 @@ public class DiscoveryThread implements Runnable, NestDevice {
 					// Terminate all the callback threads
 					terminateCallbackThread(devId);
 				}
-				
-				
+
 				return;
 			} catch (Exception e) {
 				LOG.debug("Error on discovery thread");
@@ -170,11 +181,11 @@ public class DiscoveryThread implements Runnable, NestDevice {
 	};
 
 	/**
-	 * Analyze the json sent by the appliance key-by-key, find which class
-	 * owns the key and pass it to the set method of JNest. Note: Key-by-key
-	 * because in the future I will support the composition of the Json with
-	 * keys that are defined in different classes (e.g. 1 key of shareddata
-	 * class, 1 key of structuredata class, ecc...)
+	 * Analyze the json sent by the appliance key-by-key, find which class owns
+	 * the key and pass it to the set method of JNest. Note: Key-by-key because
+	 * in the future I will support the composition of the Json with keys that
+	 * are defined in different classes (e.g. 1 key of shareddata class, 1 key
+	 * of structuredata class, ecc...)
 	 * 
 	 * @param deviceId
 	 * @param json

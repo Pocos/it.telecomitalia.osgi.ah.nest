@@ -9,9 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -24,7 +21,9 @@ public class ThermostatThread implements Runnable {
 	private NestDevice dev;
 	private String deviceId;
 	private String structureId;
-	private static Logger LOG = LoggerFactory.getLogger(DiscoveryThread.class);
+
+	// private static Logger LOG =
+	// LoggerFactory.getLogger(DiscoveryThread.class);
 
 	public ThermostatThread(NestDevice dev, JNest jn, String deviceId, String structureId) {
 		this.jn = jn;
@@ -81,12 +80,11 @@ public class ThermostatThread implements Runnable {
 
 			// Notify the appliance that something is happened
 			;
-			((NestDeviceImpl) dev).notifyFrame(dev.getId(), 
+			((NestDeviceImpl) dev).notifyFrame(dev.getId(),
 					field_list.get("shared." + deviceId).value.current_temperature,
 					field_list.get("device." + deviceId).value.current_humidity,
 					field_list.get("shared." + deviceId).value.target_temperature,
-					field_list.get("structure." + structureId).value.away
-					);
+					field_list.get("structure." + structureId).value.away);
 		}
 	}
 }

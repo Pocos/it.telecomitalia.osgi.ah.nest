@@ -1,12 +1,55 @@
 /*! \mainpage Nest Integration with Jemma
  *
- * \section intro_sec Introduction
+ * \section intro_sec Finalità del progetto
+ * Scopo del progetto è quello di integrare il dispositivo <a href="https://nest.com/thermostat/meet-nest-thermostat/">Nest Thermostat</a> con la piattaforma Jemma.
  *
- * This is the introduction.
+ * \section therm_sec Nest Thermostat
+ * \subsection desc_prog Descrizione dispositivo
+ * \image html images/Diapositiva1.jpg "Configurazione Nest"
+ * L'apparato Nest si compone di due oggetti distinti:
+ * - Nest Thermostat
+ * - Heat Link <br>
+ * <p>Il Nest Thermostat è l'interfaccia utente principale; tramite essa si possono impartire comandi al sistema autonomo di riscaldamento o di raffreddamento. Lo schermo LCD è touch, mentre le opzioni di configurazione possono 
+ * essere settate ruotando la ghiera in senso orario o antiorario.</p>
+ * <p>L'Heat Link è l'attuatore del sistema: contiene all'interno un relè elettromagnetico che regola l'accensione e lo spegnimento della caldaia o dell'impianto di raffreddamento della casa. Esso comunica con il termostato con un protocollo 802.15.4,
+ * probabilmente una versione sperimentale del protocollo <a href="http://threadgroup.org/">Thread</a></p>
+ * \subsection schema_comm Schema di comunicazione
+  * \image html images/Diapositiva2.jpg "Flusso delle informazioni"
+  * <p>Il Nest Thermostat è perennemente connesso, tramite il router, ad un <b>cloud Nest</b>. Tramite questa piattaforma esso invia aggiornamenti sullo stato e riceve comandi.</p>
+  * <p>Il Nest cloud contiene tutti i dispositivi registrati con il nome utente: non solo
+  * termostati, ma tutti i dispositivi Nest o Nest-compatibili disponibili sul mercato (sensori di fumo, lampadine HUE, videcamere). Dal momento che è possibile controllare il Nest Thermostat da un'interfaccia Web, e visto che non è possibile
+  * interfacciarsi con esso ad un livello più basso, l'idea è stata quella di replicare il comportamento dell'interfaccia web per rendere accessibili le informazioni al sistema Jemma</p>.
+  * Lo schema di comunicazione scelto è il seguente:
+  * 1. Connessione: La board FlexGrid si connette al Nest Cloud tramite una connessione SSL usando come credenziali nome utente e password. In caso di successo il Nest Cloud risponde con una chiave generata internamente, chiave che verrà usata da questo momento in
+  * avanti per poter comunicare.
+  * 2. Notifiche Real-time: La board invia un messaggio in long-poll al cloud per sottroscriversi agli aggiornamenti di stato del Nest. Appena un parametro tra quelli richiesti cambia sul Nest Thermostat esso lo notifica al Nest cloud, che la
+  * inoltrerà al sistema Jemma. La notifica non è altro che un JSON, che conterrà all'interno una serie di parametri che rappresentano lo stato attuale del dispositivo
+  * 3. Invio comandi: La board può inviare comandi, ad esempio settare la temperatura desiderata in casa, al Nest cloud: sarà esso ad inoltrare il comando al Nest Thermostat. Anche in questo caso il comando è rappresentato da un JSON in un formato specifico
+  
+ * \section dett_sec Dettagli implementativi
+ * \subsection arch_base_driver Architettura Base Driver
+ * <p>Dal configuration manager vengono recuperate le credenziali di accesso al Nest cloud: nome utente e password.</p>
+ * <p>Appena viene attivato il bundle it.telecomitalia.ah.nest le suddette credenziali vengono usate dalla classe it.telecomitalia.osgi.ah.internal.nest.NestBaseDriver per loggarsi su piattaforma. A questo punto viene fatto partire il it.telecomitalia.osgi.ah.internal.nest.DiscoveryThread che, ogni tot secondi, 
+ * contatta il cloud chiedendo di la lista di dispositivi nest attualmente registrati. Per ognuno di questi dispositivi viene attivato un servizio OSGI e viene istanziato un oggetto che implementa NestDevice.</p>
+ * <p>A questo punto il sistema OSGI rileva l'attivazione del servizio, legge le sue caratteristiche e crea una nuova <b>appliance</b> avente le stesse caratteristiche.</p>
+ * <p>Le appliance sono dei particolari oggetti che espongono degli <b> endpoint </b>, dei punti di aggancio, racchiusi in un cluster, attraverso il quale vengono eseguite le operazioni sulle singole funzionalità che offrono i dispositivi.
+ * Nel caso del Nest Thermostat l'appliance creata è del tipo it.telecomitalia.ah.nest.appliances.NestThermostatAppliance, l'endpoint è del tipo it.telecomitalia.osgi.ah.nest.NestEndPoint e il cluster it.telecomitalia.osgi.ah.nest.appliances.NestThermostatClusterServer. Quindi attraverso il NestThermostatClusterServer è possibile settare ad esempio la
+ * temperatura desiderata.</p>
+
+* \subsection prot_mess Protocollo di messaggi
+* <p>Il base driver scambia messaggi con il Nest Cloud del tipo Json. E' stato implementato quindi un piccolo serializzatore/parser all'interno del package it.telecomitalia.osgi.ah.internal.nest.lib.</p> 
+* <p> Ogni qual volta arriva un messaggio dal cloud il Json ricevuto viene deserializzato popolando delle classi specifiche. Qualora non si vogliano ricevere informazioni su un particolare parametro basta eliminarlo.
+* In questo caso il parser ignorerà del tutto quel campo particolare.</p> 
+* <p> Quando si vuole inviare un comando al termostato bisogna costruire il Json usando come riferimento le classi del package it.telecomitalia.osgi.ah.internal.nest.lib.</p>
+ 
+* \subsection sist_notif Sottosistema di notifiche
+* <p>Per gestire le notifiche in tempo reale il it.telecomitalia.osgi.ah.internal.nest.DiscoveryThread dispatcha un thread per ogni dispositivo trovato (classe it.telecomitalia.osgi.ah.internal.nest.ThermostatThread), che si preoccupa di inviare una richiesta in long poll con un timeout sufficientemente lungo. La richiesta viene costruita popolando
+* un Json con i parametri per cui ci si vuole sottoscrivere. A questo punto distinguiamo i seguenti casi:
+* - Sul Nest Thermostat cambia un parametro incluso nella richiesta: Il Nest cloud risponde alla richiesta long-poll e sblocca il thread figlio ThermostatThread, che invia un'insieme di notifiche OSGI che descrivono l'avvenuto cambiamento. La scelta di inviare una notifica separata per ogni parametro è dovuta alle scelte architetturali pregresse del sistema Jemma, tali per cui è possibile notificare su un solo parametro alla volta.
+* - Sul Nest Thermostat cambia un parametro non incluso nella richiesta: Il thread figlio non riceverà alcuna risposta dal Nest cloud
+* - Scatta il timeout della richiesta long-poll: Il thread figlio ThermostatThread rigenera la richiesta long-poll al Nest cloud
+
+ * \subsection schema_insieme Schema di insieme
+ * \image html images/Diapositiva3.jpg "Schema di insieme Jemma"
  *
- * \section install_sec Installation
- *
- * \subsection step1 Step 1: Opening the box
- *
- * etc...
  */

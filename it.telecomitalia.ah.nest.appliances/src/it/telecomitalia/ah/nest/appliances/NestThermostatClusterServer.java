@@ -135,6 +135,25 @@ public class NestThermostatClusterServer extends NestServiceCluster implements N
 		}
 	}
 
+	/**
+	 * Notify Jemma that a changes is performed on the Nest Thermostat. A call
+	 * of notifyAttributeValue is made for a set of predefined parameters
+	 * 
+	 * @param deviceId
+	 *            The deviceId that uniquely identifies the thermostat
+	 * @param current_temperature
+	 *            The current temperature of the thermostat. Could be
+	 *            represented as Celsius or Farenheit, depending on which
+	 *            configuration is selected
+	 * @param current_humidity
+	 *            The current humidity. Expressed in percent
+	 * @param target_temperature
+	 *            The desidered temperature of the thermostat
+	 * @param away_state
+	 *            A boolean value that shows if the thermostat is set as away
+	 *            (no cooling or heating, energy saver) or home (cooling and/or
+	 *            heating enabled
+	 */
 	public boolean notifyFrame(String deviceId, double current_temperature, double current_humidity,
 			double target_temperature, boolean away_state) throws Exception {
 		LOG.error("Update on device:" + deviceId + "Away:" + away_state + "Current Temperature:" + current_temperature

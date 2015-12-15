@@ -11,34 +11,35 @@ public class Activator implements BundleActivator {
 	private static BundleContext context;
 
 	private Vector<ApplianceFactory> applicationFactories = new Vector<ApplianceFactory>();
-	
+
 	static BundleContext getContext() {
 		return context;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
+	/**
+	 * Start it.telecomitalia.ah.nest.appliances bundle. It adds
+	 * NestThermostatApplianceFactory to applicationFactories, the list of
+	 * ApplianceFactory
 	 */
 	public void start(BundleContext bundleContext) throws Exception {
 		Activator.context = bundleContext;
 		applicationFactories.add(new NestThermostatApplianceFactory());
-		
-		for(ApplianceFactory a:applicationFactories){
+
+		for (ApplianceFactory a : applicationFactories) {
 			a.start(bundleContext);
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
+	/**
+	 * Stop it.telecomitalia.ah.nest.appliances bundle. It remove any entry from
+	 * applicationFactories list
 	 */
 	public void stop(BundleContext bundleContext) throws Exception {
-		for(ApplianceFactory a:applicationFactories){
+		for (ApplianceFactory a : applicationFactories) {
 			a.stop(bundleContext);
 		}
 		Activator.context = null;
-		
+
 	}
 
 }
